@@ -1,5 +1,7 @@
+import {QueryResult} from "pg";
+
 export class GetInterface {
-    public query(data:unknown):Promise<any[]>{
-        return Promise.resolve([])
+    public async query(data:unknown):Promise<QueryResult<any>>{
+        return Promise.resolve({ rows: [], command: '', rowCount: 0, oid: 0, fields: [] });
     }
 }

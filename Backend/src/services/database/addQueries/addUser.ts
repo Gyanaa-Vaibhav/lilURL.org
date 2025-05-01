@@ -43,4 +43,4 @@ export class AddUser implements AddInterface{
 
 const data = {username:"test",email:"from@server.com",password:"test456"}
 const { rows } = await AddUser.query(data);
-console.log(rows[0]?.userid)
+// console.log(rows[0]?.userid)

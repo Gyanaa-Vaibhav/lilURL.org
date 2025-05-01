@@ -17,8 +17,8 @@ const linksInitQuery =`
     CREATE TABLE IF NOT EXISTS links(
         linkID SERIAL PRIMARY KEY,
         userID INT REFERENCES users (userID),
-        longURL TEXT,
-        shortURL VARCHAR(20),
+        longURL TEXT UNIQUE,
+        shortURL VARCHAR(20) UNIQUE,
         createdAT TIMESTAMP DEFAULT NOW(),
         expiresAT TIMESTAMP
     )

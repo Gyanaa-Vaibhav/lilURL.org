@@ -6,7 +6,6 @@ export class GetUser implements GetInterface{
     public async query({email}:{email:string}){
         const db = PostgresDB.getInstance()
         const value = [email]
-        const {rows} = await db.query("",value)
-        return rows
+        return await db.query("",value)
     }
 }
