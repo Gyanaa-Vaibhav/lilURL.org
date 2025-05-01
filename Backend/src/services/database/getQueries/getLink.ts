@@ -4,6 +4,7 @@ import {QueryResult} from "pg";
 
 type QueryInput = { shortLink?: string; longURL?: string; id?: number };
 export class GetLink implements GetInterface{
+    private db = PostgresDB.getInstance()
     /**
      * Dynamically resolves a fetch strategy based on the provided input key.
      * Delegates the query to one of the dedicated methods: byShortURL, byLongURL, or byID.
@@ -32,13 +33,12 @@ export class GetLink implements GetInterface{
      * @returns {Promise<QueryResult>} The result containing the matching link row, if found.
      */
     public async byID(id:number):Promise<QueryResult> {
-        const db = PostgresDB.getInstance()
         const value = [id]
         const query =`
             SELECT * FROM links
             WHERE linkID = ($1)
         `
-        return await db.query(query,value)
+        return await this.db.query(query,value)
     }
 
     /**
@@ -48,13 +48,12 @@ export class GetLink implements GetInterface{
      * @returns {Promise<QueryResult>} The result containing the matching link row, if found.
      */
     public async byLongURL(longURL:string):Promise<QueryResult> {
-        const db = PostgresDB.getInstance()
         const value = [longURL]
         const query =`
             SELECT * FROM links
             WHERE longurl = ($1)
         `
-        return await db.query(query,value)
+        return await this.db.query(query,value)
     }
 
     /**
@@ -64,13 +63,12 @@ export class GetLink implements GetInterface{
      * @returns {Promise<QueryResult>} The result containing the matching link row, if found.
      */
     public async byShortURL(shortURL:string):Promise<QueryResult> {
-        const db = PostgresDB.getInstance()
         const value = [shortURL]
         const query = `
             SELECT * FROM links
             WHERE shorturl = ($1)
         `
-        return await db.query(query,value)
+        return await this.db.query(query,value)
     }
 
     /**
@@ -83,8 +81,7 @@ export class GetLink implements GetInterface{
      * console.log(rows[0]); // Latest link entry
      */
     public async lastIndex(): Promise<QueryResult>{
-        const db = PostgresDB.getInstance()
         const query = "SELECT * FROM links ORDER BY linkID DESC LIMIT 1;"
-        return await db.query(query)
+        return await this.db.query(query)
     }
 }

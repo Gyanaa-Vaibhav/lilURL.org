@@ -9,6 +9,7 @@ type linkType = {
 }
 
 export class AddLink implements AddInterface{
+    private db = PostgresDB.getInstance()
     /**
      * Inserts a new shortened link into the database.
      *
@@ -27,7 +28,6 @@ export class AddLink implements AddInterface{
      * const result = await AddLink.query(data);
      */
     public async query({userId,LongLink,shortLink}:linkType):Promise<QueryResult> {
-        const db = PostgresDB.getInstance()
         const values = [LongLink, shortLink, userId, new Date()]
         const query =`
             INSERT INTO 
@@ -35,6 +35,6 @@ export class AddLink implements AddInterface{
             VALUES 
                 ($1,$2,$3,$4)
         `
-        return await db.query(query, values)
+        return await this.db.query(query, values)
     }
 }

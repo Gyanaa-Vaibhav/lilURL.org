@@ -13,6 +13,9 @@ type userData = {
  * Implements AddInterface for consistent add operation structure.
  */
 export class AddUser implements AddInterface{
+
+    private db = PostgresDB.getInstance();
+
     /**
      * Inserts a new user into the users table and returns the generated userID.
      *
@@ -41,6 +44,6 @@ export class AddUser implements AddInterface{
     }
 }
 
-const data = {username:"test",email:"from@server.com",password:"test456"}
-const { rows } = await AddUser.query(data);
+// const data = {username:"test",email:"from@server.com",password:"test456"}
+// const { rows } = await AddUser.query(data);
 // console.log(rows[0]?.userid)
