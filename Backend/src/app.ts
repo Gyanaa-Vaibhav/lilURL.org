@@ -1,7 +1,7 @@
 import express from "express"
 import * as url from "node:url";
-import dotenv from 'dotenv';
 import * as path from "node:path";
+import dotenv from 'dotenv';
 dotenv.config()
 console.log(process.env.DB_HOSTNAME)
 const app = express()
