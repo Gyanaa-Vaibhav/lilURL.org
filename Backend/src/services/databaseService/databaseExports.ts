@@ -3,8 +3,8 @@ export {PostgresDB as Database} from './database.js'
 
 // Get Queries
 export {
-    getLinkService,
     getUserService,
+    getLinkService,
     getExpiredLinksService,
 } from './getQueries/getExports.js'
 

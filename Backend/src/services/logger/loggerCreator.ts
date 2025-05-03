@@ -39,6 +39,7 @@ const format = combine(
     })
 )
 
+// TODO need to add Daily File exports manually to all the loggers
 const transports = [new winston.transports.Console({
     level: LoggerLevel.SILLY,
 })]
@@ -51,6 +52,19 @@ const createLogger = (level:LoggerLevel) => {
     })
 }
 
+/**
+ * LoggerCreator class provides separate Winston loggers for each log level.
+ * Each logger can be accessed independently to log messages of that level.
+ *
+ * Levels supported:
+ * - error
+ * - warn
+ * - info
+ * - http
+ * - verbose
+ * - debug
+ * - silly
+ */
 export class LoggerCreator{
     private errorLogger = createLogger(LoggerLevel.ERROR)
     private warnLogger = createLogger(LoggerLevel.WARN)
@@ -60,30 +74,51 @@ export class LoggerCreator{
     private debugLogger = createLogger(LoggerLevel.DEBUG)
     private sillyLogger = createLogger(LoggerLevel.SILLY)
 
+    /**
+     * Returns the Winston logger configured for 'error' level logs.
+     */
     public getErrorLogger(){
         return this.errorLogger
     }
 
+    /**
+     * Returns the Winston logger configured for 'warn' level logs.
+     */
     public getWarnLogger(){
         return this.warnLogger
     }
 
+    /**
+     * Returns the Winston logger configured for 'info' level logs.
+     */
     public getInfoLogger(){
         return this.infoLogger
     }
 
+    /**
+     * Returns the Winston logger configured for 'http' level logs.
+     */
     public getHttpLogger(){
         return this.httpLogger
     }
 
+    /**
+     * Returns the Winston logger configured for 'verbose' level logs.
+     */
     public getVerboseLogger(){
         return this.verboseLogger
     }
 
+    /**
+     * Returns the Winston logger configured for 'debug' level logs.
+     */
     public getDebugLogger(){
         return this.debugLogger
     }
 
+    /**
+     * Returns the Winston logger configured for 'silly' level logs.
+     */
     public getSillyLogger(){
         return this.sillyLogger
     }

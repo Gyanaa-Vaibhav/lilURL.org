@@ -27,6 +27,10 @@ const client = await redisClient.getInstance();
 class CacheSetter implements CacheInterface {
     private cache = client;
 
+    /**
+     * Executes a cache operation.
+     * See {@link CacheSetter} for supported operations and examples.
+     */
     public async query(data: {
         key: string;
         value?: string;
@@ -94,5 +98,3 @@ class CacheSetter implements CacheInterface {
 }
 
 export const cacheSetter = new CacheSetter();
-await cacheSetter.query({key:"key", value:"value234"})
-await cacheSetter.query({type:'incr',key:"counter"})

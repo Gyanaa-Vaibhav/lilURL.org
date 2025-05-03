@@ -26,17 +26,8 @@ class CacheGetter implements CacheInterface {
     private cache = client;
 
     /**
-     * Query Redis for various get operations.
-     *
-     * Supported types:
-     * - 'get': Retrieve a value by key
-     * - 'hget': Get field value from a hash
-     * - 'lindex': Get value at index in a list
-     * - 'mget': Get multiple values by keys
-     * - 'keys': Get keys matching a pattern
-     *
-     * @param data Object containing operation details.
-     * @returns The result of the corresponding Redis operation.
+     * Executes a cache operation.
+     * See {@link CacheGetter} for supported operations and examples.
      */
     public async query(data: {
         type?: 'get' | 'hget' | 'lindex' | 'mget' | 'keys';
@@ -104,5 +95,3 @@ class CacheGetter implements CacheInterface {
 }
 
 export const cacheGetter = new CacheGetter();
-const value = await cacheGetter.query({type:"get",key:"key"})
-console.log(value)
