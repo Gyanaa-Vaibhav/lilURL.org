@@ -1,9 +1,9 @@
 import {GetInterface} from './getExports.js'
-import {PostgresDB} from '../databaseExports.js'
+import {Database} from '../databaseExports.js'
 import {QueryResult} from "pg";
 
-export class GetExpiredLinks implements GetInterface{
-    private db = PostgresDB.getInstance()
+class GetExpiredLinks implements GetInterface{
+    private db = Database.getInstance()
 
     public async query():Promise<QueryResult> {
         return await this.db.query("SELECT * FROM expiredlinks")
@@ -16,6 +16,6 @@ export class GetExpiredLinks implements GetInterface{
     }
 }
 
-// const getexpiredlinks = new GetExpiredLinks()
+export const getExpiredLinksService = new GetExpiredLinks()
 // const rows = await getexpiredlinks.getFirstID()
 // console.log(rows)

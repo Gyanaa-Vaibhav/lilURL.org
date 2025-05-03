@@ -1,5 +1,5 @@
 import {AddInterface} from './addExports.js'
-import {PostgresDB} from '../databaseExports.js'
+import {Database} from '../databaseExports.js'
 import {QueryResult} from "pg";
 
 type linkType = {
@@ -8,8 +8,8 @@ type linkType = {
     shortLink:string,
 }
 
-export class AddLink implements AddInterface{
-    private db = PostgresDB.getInstance()
+class AddLink implements AddInterface{
+    private db = Database.getInstance()
     /**
      * Inserts a new shortened link into the database.
      *
@@ -38,3 +38,5 @@ export class AddLink implements AddInterface{
         return await this.db.query(query, values)
     }
 }
+
+export const addLinkService = new AddLink()

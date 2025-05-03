@@ -1,5 +1,6 @@
 import {Pool} from 'pg';
 import dotenv from 'dotenv';
+import {logError} from "../logger/loggerExport.js";
 dotenv.config()
 
 /**
@@ -20,7 +21,8 @@ class Database{
      */
     public static getInstance() {
         if (!Database.database) {
-            throw new Error("Database not initialised please initialise using initialiseDB() method");
+            logError("Database not initialised please initialise using Database.initialiseDB() method")
+            throw new Error("Database not initialised please initialise using Database.initialiseDB() method");
         }
         return Database.database;
     }
@@ -33,6 +35,7 @@ class Database{
      */
     public static initialiseDB(DBConnection:unknown){
         if (Database.database && DBConnection) {
+            logError("Database already initialised")
             throw new Error("Database already initialised");
         }
         if (!Database.database && DBConnection) {
@@ -55,9 +58,6 @@ export class PostgresDB{
      * Returns the database instance as a PostgreSQL Pool.
      */
     public static getInstance(){
-        if (!Database.getInstance()) {
-            throw new Error("Database not initialised please initialise using initialiseDB() method");
-        }
         return Database.getInstance() as Pool;
     }
 }

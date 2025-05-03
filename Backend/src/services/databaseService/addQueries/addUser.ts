@@ -1,5 +1,5 @@
 import {AddInterface} from './addExports.js'
-import {PostgresDB} from '../databaseExports.js'
+import {Database} from '../databaseExports.js'
 import {QueryResult} from "pg";
 type userData = {
     username:string,
@@ -12,9 +12,9 @@ type userData = {
  * Uses the PostgresDB singleton to execute SQL queries.
  * Implements AddInterface for consistent add operation structure.
  */
-export class AddUser implements AddInterface{
+class AddUser implements AddInterface{
 
-    private db = PostgresDB.getInstance();
+    private static db = Database.getInstance();
 
     /**
      * Inserts a new user into the users table and returns the generated userID.
@@ -31,7 +31,6 @@ export class AddUser implements AddInterface{
      * console.log(rows[0].userID); // New user's ID
      */
     public static async query({username, email, password}: userData): Promise<QueryResult<{ userid: string; any: any }>> {
-        const db = PostgresDB.getInstance()
         const values = [username, email, password]
         const query =`
             INSERT INTO 
@@ -40,9 +39,11 @@ export class AddUser implements AddInterface{
                 ($1,$2,$3)
             RETURNING userID
         `;
-        return await db.query(query, values)
+        return await this.db.query(query, values)
     }
 }
+
+export const addUserService = new AddUser()
 
 // const data = {username:"test",email:"from@server.com",password:"test456"}
 // const { rows } = await AddUser.query(data);

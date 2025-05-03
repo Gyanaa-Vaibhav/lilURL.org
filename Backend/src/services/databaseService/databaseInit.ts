@@ -1,6 +1,6 @@
-import {PostgresDB} from './databaseExports.js'
+import {Database} from './databaseExports.js'
 
-const db = PostgresDB.getInstance()
+const db = Database.getInstance()
 const userInitQuery =`
     CREATE TABLE IF NOT EXISTS users(
         userID SERIAL PRIMARY KEY,

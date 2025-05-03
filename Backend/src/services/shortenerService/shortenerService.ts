@@ -1,5 +1,5 @@
 import {base62Decoder,base62Encoder} from './utils/utilsExport.js'
-import {GetLink,AddLink,GetExpiredLinks} from "../database/databaseExports.js";
+import {GetLink,AddLink,GetExpiredLinks} from "../databaseService/databaseExports.js";
 
 type ReturnURL = {
     success:boolean,
@@ -8,8 +8,8 @@ type ReturnURL = {
 }
 export class ShortenerService{
     private index;
-    private getLink = new GetLink()
-    private addLink = new AddLink()
+    private getLink = GetLink
+    private addLink = AddLink
     private getExpiredLink = new GetExpiredLinks()
 
     constructor(index?:number) {
@@ -17,19 +17,23 @@ export class ShortenerService{
     }
 
     public async createLink(LongLink:string):Promise<string> {
-        const oldQuery = await this.getLink.query({longURL:LongLink})
-        const expiredLinks = await this.getExpiredLink.getFirstID()
-
-        if(oldQuery.rows) {
-            console.warn("Short link already exists returning the old one:",oldQuery.rows[0].shorturl)
-            return oldQuery.rows[0].shorturl;
-        }
-
-        if(!expiredLinks){
-
-        }
-
         if(!this.index) await this.updateIndex()
+
+        const linkExists = await this.getLink.query({longURL:LongLink})
+        const expiredLinks = await this.getExpiredLink.getFirstID()
+        console.log(expiredLinks)
+        if(expiredLinks?.id){
+            console.log("ok Expired has Things")
+        }
+
+        if(linkExists.rows) {
+            console.warn("Short link already exists returning the old one:",linkExists.rows[0].shorturl)
+            return linkExists.rows[0].shorturl;
+        }
+
+        if(expiredLinks?.id){
+            console.log("ok Expired has Things")
+        }
 
         const shortLink = base62Encoder(this.index!)
         await this.addLink.query({shortLink,LongLink})
@@ -61,5 +65,6 @@ export class ShortenerService{
 }
 
 const shortenerService = new ShortenerService()
-const shortUrl = await shortenerService.createLink("www.google.com")
-const {success} = await shortenerService.getLongURL("j")
+// const shortUrl = await shortenerService.createLink("www.google.com")
+const Link = await shortenerService.getLongURL("j")
+console.log(Link?.longURL)

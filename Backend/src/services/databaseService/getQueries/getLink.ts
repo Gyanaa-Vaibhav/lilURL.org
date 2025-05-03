@@ -1,10 +1,11 @@
 import {GetInterface} from './getExports.js'
-import {PostgresDB} from '../databaseExports.js'
+import {Database} from '../databaseExports.js'
 import {QueryResult} from "pg";
+import {logError} from "../../logger/loggerExport.js";
 
 type QueryInput = { shortLink?: string; longURL?: string; id?: number };
-export class GetLink implements GetInterface{
-    private db = PostgresDB.getInstance()
+class GetLink implements GetInterface{
+    private db = Database.getInstance()
     /**
      * Dynamically resolves a fetch strategy based on the provided input key.
      * Delegates the query to one of the dedicated methods: byShortURL, byLongURL, or byID.
@@ -23,7 +24,8 @@ export class GetLink implements GetInterface{
         if (input.shortLink) return this.byShortURL(input.shortLink);
         if (input.longURL) return this.byLongURL(input.longURL);
         if (input.id) return this.byID(input.id);
-        throw new Error("Invalid query input");
+        logError("Invalid query input for GetLink")
+        throw new Error("Invalid query input for GetLink");
     }
 
     /**
@@ -85,3 +87,5 @@ export class GetLink implements GetInterface{
         return await this.db.query(query)
     }
 }
+
+export const getLinkService = new GetLink();
