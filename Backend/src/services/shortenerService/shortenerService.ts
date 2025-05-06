@@ -1,17 +1,18 @@
 import {base62Decoder,base62Encoder} from './utils/utilsExport.js'
 import {getLinkService,addLinkService,getExpiredLinksService} from "../databaseService/databaseExports.js";
 
-type ReturnURL = {
+type commonType = {
     success:boolean,
     message:"Success" | "Not Found" | "Expired",
-    longURL?:string,
 }
 
+type ReturnURL = {
+    longURL?:string,
+} & commonType
+
 type CreateLinkType = {
-    success:boolean,
-    message:"Success" | "Not Found" | "Expired",
     shortURL?:string
-}
+} & commonType
 
 export class ShortenerService{
     private index;
