@@ -230,6 +230,10 @@ main h2 {
     transition: background-color 0.3s ease;
 }
 
+.getLink:active {
+    scale: 0.98;
+}
+
 .shortenLink:hover:not(.active),
 .qrcode:hover:not(.active) {
     background-color: #e3e3bc;
@@ -250,14 +254,44 @@ main h2 {
 }
 
 
+.final-cta {
+    margin: 0 120px;
+    text-align: center;
+}
 
+.final-cta .title {
+    margin: 20px 0;
+    color: var(--Body-Color);
+    font-size: 4em;
+    font-family: Manrope-Bold, sans-serif;
+}
 
-.wave {
-    z-index: -2;
-    height: 100vh;
-    width: 100%;
-    position: absolute;
-    top: 0;
+.final-cta p {
+    margin: 0;
+    font-size: 2em;
+    color: var(--Body-Color);
+    font-family: Manrope-SemiBold, sans-serif;
+}
+
+.final-cta .getStarted{
+    border: none;
+    padding: 20px;
+    font-size: 2.5em;
+    margin: 50px 0;
+    border-radius: 16px;
+    color: var(--Primary-Color);
+    font-family: Manrope-Bold, sans-serif;
+    background-color: var(--Accent-Color-2);
+}
+
+.final-cta .getStarted:hover {
+    cursor: pointer;
+    scale: 1.05;
+    transition: background-color 0.3s ease;
+}
+
+.final-cta .getStarted:active {
+    scale: 1;
 }
 
 footer {
@@ -314,4 +348,106 @@ footer li:nth-last-child(1) a{
 
 footer li:nth-last-child(1) a:hover {
     background-color: #bf8a3d;
+}
+
+.wave {
+    z-index: -2;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+@media screen and (max-width: 1200px) {
+    .generator {
+        gap: 16px;
+        min-width: 450px;
+        padding: 50px 25px;
+        flex-direction: column;
+    }
+}
+
+
+@media screen and (max-width: 1075px) {
+    nav {
+        margin: 0 60px;
+    }
+
+    nav a, main h2{
+        font-size: 17px;
+    }
+
+    #lilurl {
+        font-size: 3em;
+    }
+
+    main {
+        margin: 50px 60px 50px;
+    }
+
+    main h1 {
+        font-size: 3.5em;
+    }
+
+    .card {
+        margin: 30px 60px 0;
+    }
+
+    .generator h3{
+        font-size: 2.4em;
+    }
+
+    .holder #long_link{
+        font-size: 17px;
+    }
+
+    .getLink {
+        font-size: 17px;
+    }
+
+    .shortenLink, .qrcode{
+        font-size: 17px;
+    }
+
+    .shortenLink svg, .qrcode svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .generator img{
+        height: 150px;
+    }
+
+    .generator .scissor{
+        left: -20%;
+        height: 200px;
+    }
+
+    .generator .qr-code{
+        height: 200px;
+        top: -85px;
+    }
+
+    .final-cta .title {
+        font-size: 3.5em;
+        margin: 10px 0;
+    }
+
+    .final-cta p {
+        font-size: 17px;
+    }
+
+    .final-cta .getStarted {
+        padding: 8px;
+        margin-top: 20px;
+        font-size: 17px;
+    }
+
+    footer .lilurl{
+        font-size: 3em;
+    }
+
+    footer a {
+        font-size: 17px;
+    }
 }
