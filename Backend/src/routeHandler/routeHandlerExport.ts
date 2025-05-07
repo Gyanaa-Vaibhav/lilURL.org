@@ -1,0 +1,1 @@
+export {redirectRouter} from './redirect/routes/redirectRoute.js'

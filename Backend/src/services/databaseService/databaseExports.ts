@@ -13,6 +13,7 @@ export {
 export {
     addLinkService,
     addUserService,
+    addAnalyticsService,
 } from './addQueries/addExports.js'
 
 

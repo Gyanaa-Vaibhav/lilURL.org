@@ -75,19 +75,25 @@ nav a {
     font-family: Manrope-Bold, sans-serif;
 }
 
-nav a:hover {
-    background-color: rgba(221, 168, 83, 0.1);
+.nav-links a:hover {
+    background-color: rgba(225, 152, 31, 0.35);
     border-radius: 8px;
     transition: background-color 0.3s ease;
 }
 
-nav li:nth-child(4){
+#getStarted {
+    outline: none;
     border: 3.5px solid var(--Secondary-Color);
     border-radius: 1.6em;
+    box-shadow: none;
+    padding: 0.3em 0.6em;
 }
 
-nav li:nth-child(4):hover {
-    background-color: rgba(39, 84, 138, 0.1);
+#getStarted:hover {
+    overflow: hidden;
+    background-color: rgba(225, 152, 31, 0.35);
+    outline: none;
+    box-shadow: none;
 }
 
 nav li:nth-last-child(1) a{
@@ -98,6 +104,7 @@ nav li:nth-last-child(1) a{
 
 nav li:nth-last-child(1) a:hover {
     background-color: #bf8a3d;
+    border-radius: 1.6em;
 }
 
 main {
@@ -121,6 +128,9 @@ main h2 {
 }
 
 .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 50px 120px 0;
 }
 
@@ -162,7 +172,8 @@ main h2 {
     min-width: 600px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 32px;
     padding: 0 25px;
     min-height: 350px;
     position: relative;
@@ -358,15 +369,64 @@ footer li:nth-last-child(1) a:hover {
     top: 0;
 }
 
-@media screen and (max-width: 1200px) {
+.mobile-nav-toggle {
+    display: none;
+    font-size: 3.5em;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--Accent-Color);
+    z-index: 1001;
+    position: relative;
+}
+
+@media screen and (max-width: 835px) {
     .generator {
-        gap: 16px;
         min-width: 450px;
-        padding: 50px 25px;
+    }
+
+    .mobile-nav-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        left: 100%;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--Primary-Color);
+        display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav li {
+        font-size: 2em;
     }
 }
 
+/*@media screen and (max-width: 1200px) {*/
+/*    .generator {*/
+/*        gap: 16px;*/
+/*        min-width: 450px;*/
+/*        padding: 50px 25px;*/
+/*        flex-direction: column;*/
+/*    }*/
+/*}*/
 
 @media screen and (max-width: 1075px) {
     nav {
@@ -381,7 +441,7 @@ footer li:nth-last-child(1) a:hover {
         font-size: 3em;
     }
 
-    main {
+    main, .final-cta {
         margin: 50px 60px 50px;
     }
 
@@ -449,5 +509,210 @@ footer li:nth-last-child(1) a:hover {
 
     footer a {
         font-size: 17px;
+    }
+}
+
+@media screen and (max-width: 750px){
+    .generator {
+        flex-direction: column;
+        gap: 16px;
+        padding: 40px 0;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    body {
+        font-size: 8px;
+    }
+
+    nav {
+        margin: 0 20px;
+        flex-wrap: wrap;
+    }
+
+    #lilurl {
+        font-size: 2.5em;
+    }
+
+    .mobile-nav-toggle {
+        display: block;
+        font-size: 2.5em;
+        background: none;
+        border: none;
+        color: var(--Accent-Color);
+        z-index: 1001;
+    }
+
+    .shortenLink, .qrcode{
+        margin: 0 5px;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        left: 100%;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--Primary-Color);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 1.5em;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav li {
+        font-size: 2em;
+    }
+
+    main, .final-cta {
+        margin: 0 20px;
+    }
+
+    main h1 {
+        font-size: 3em;
+        margin-top: 20px;
+    }
+
+    main h2 {
+        font-size: 1.6em;
+    }
+
+    .card {
+        margin: 20px 20px 0;
+    }
+
+    .generator {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+        /*max-width: 250px;*/
+        min-width: 300px;
+    }
+
+    .holder h3 {
+        font-size: 2.2em;
+    }
+
+    .holder #long_link {
+        font-size: 1.6em;
+        min-width: 280px;
+    }
+
+    .getLink {
+        font-size: 1.6em;
+    }
+
+    .shortenLink, .qrcode {
+        font-size: 1.6em;
+    }
+
+    .generator img {
+        height: 140px;
+    }
+
+    .generator .scissor, .generator .qr-code {
+        width: 80px;
+    }
+
+    .generator .scissor{
+        width: 120px;
+    }
+
+    .final-cta .title {
+        font-size: 2.5em;
+    }
+
+    .final-cta p {
+        font-size: 1.4em;
+    }
+
+    .final-cta .getStarted {
+        font-size: 1.6em;
+        padding: 12px;
+    }
+
+    footer {
+        padding: 20px;
+        text-align: center;
+    }
+
+    footer .lilurl {
+        font-size: 2.5em;
+    }
+
+    footer ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8em;
+    }
+
+    footer li {
+        font-size: 1.6em;
+    }
+
+    .qrcode svg, .shortenLink svg {
+        width: 25px;
+    }
+
+    .qrcode, .shortenLink {
+        padding: 4px 8px;
+    }
+
+}
+
+@media screen and (max-width: 450px){
+    .generator {
+        flex-direction: column;
+        gap: 16px;
+        padding: 40px 20px;
+        max-width: 250px;
+        min-width: 250px;
+    }
+
+    .generator .holder {
+        width: 250px;
+    }
+
+    .holder #long_link {
+        min-width: 200px;
+    }
+
+    .generator h3{
+        font-size: 16px;
+    }
+
+    .shortenLink, .qrcode{
+        margin: 0 5px;
+    }
+
+    .getLink {
+        gap: 4px;
+        padding: 4px 10px;
+    }
+
+    .getLink svg {
+        height: 20px;
+    }
+
+    .generator .scissor, .generator .qr-code {
+        width: 60px;
+    }
+
+    .generator .scissor{
+        width: 90px;
     }
 }

@@ -8,6 +8,7 @@ type commonType = {
 
 type ReturnURL = {
     longURL?:string,
+    linkID?:number
 } & commonType
 
 type CreateLinkType = {
@@ -51,17 +52,18 @@ export class ShortenerService{
         const {rows} = await this.getLinkService.query({shortLink})
         const longURL = rows[0]?.longurl
         const expiryTime = rows[0]?.expiresat
+        const linkID = rows[0]?.linkid
 
         if(expiryTime && new Date(expiryTime).getTime() > new Date().getTime()){
-            return {success:false,message:"Expired"}
+            return {success:false,message:"Expired",linkID}
         }
 
         if(rows.length){
-            return {success:true,message:"Success",longURL}
+            return {success:true,message:"Success",longURL,linkID}
 
         }
 
-        return {success:false,message:"Not Found"}
+        return {success:false,message:"Not Found",linkID}
     }
 
     private async updateIndex():Promise<void> {
@@ -71,7 +73,7 @@ export class ShortenerService{
     }
 }
 
-const shortenerService = new ShortenerService()
+export const shortenerService = new ShortenerService()
 // const shortUrl = await shortenerService.createLink("www.google.com")
 const Link = await shortenerService.getLongURL("j")
 console.log(Link?.longURL)
