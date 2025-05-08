@@ -16,6 +16,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "pg": "^8.15.6",
     "redis": "^5.0.0",
     "supertest": "^7.1.0",
@@ -27,6 +30,8 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/passport-google-oauth20": "^2.0.16",
     "@types/pg": "^8.11.14",
     "@types/supertest": "^6.0.3",
     "typescript": "^5.8.3"

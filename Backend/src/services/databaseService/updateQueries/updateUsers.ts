@@ -2,7 +2,7 @@ import {UpdateInterface} from "./updateInterface";
 import {QueryResult} from "pg";
 import {Database} from '../databaseExports.js'
 
-type UpdateProperties = 'userID' | 'username' | 'email' | 'password'
+type UpdateProperties = 'userID' | 'username' | 'email' | 'password' | 'oauth_id' | 'oauth_provider'
 
 type Set = {
     where: UpdateProperties,
@@ -43,4 +43,4 @@ class UpdateUsers implements UpdateInterface{
 }
 
 export const updateUsersService = new UpdateUsers();
-await updateUsersService.query({where:'username',to:'Changed'},{where:'userID',is:'1'})
+// await updateUsersService.query({where:'oauth_id',to:'123'},{where:'userID',is:'6'})

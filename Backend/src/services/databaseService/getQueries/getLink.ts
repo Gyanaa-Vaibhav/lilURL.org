@@ -34,7 +34,7 @@ class GetLink implements GetInterface{
      * @param {number} id - The primary key (linkID) of the link.
      * @returns {Promise<QueryResult>} The result containing the matching link row, if found.
      */
-    public async byID(id:number):Promise<QueryResult> {
+    private async byID(id:number):Promise<QueryResult> {
         const value = [id]
         const query =`
             SELECT * FROM links
@@ -49,7 +49,7 @@ class GetLink implements GetInterface{
      * @param {string} longURL - The full/original URL to look up.
      * @returns {Promise<QueryResult>} The result containing the matching link row, if found.
      */
-    public async byLongURL(longURL:string):Promise<QueryResult> {
+    private async byLongURL(longURL:string):Promise<QueryResult> {
         const value = [longURL]
         const query =`
             SELECT * FROM links
@@ -64,7 +64,7 @@ class GetLink implements GetInterface{
      * @param {string} shortURL - The shortened URL code to look up.
      * @returns {Promise<QueryResult>} The result containing the matching link row, if found.
      */
-    public async byShortURL(shortURL:string):Promise<QueryResult> {
+    private async byShortURL(shortURL:string):Promise<QueryResult> {
         const value = [shortURL]
         const query = `
             SELECT * FROM links

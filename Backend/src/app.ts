@@ -3,8 +3,8 @@ import * as url from "node:url";
 import * as path from "node:path";
 import dotenv from 'dotenv';
 import cors from 'cors';
-import {shortenerService} from "./services/servicesExport.js";
-import {redirectRouter} from './routeHandler/routeHandlerExport.js'
+import './services/servicesExport.js';
+import {authRouter, redirectRouter} from './routeHandler/routeHandlerExport.js'
 
 dotenv.config()
 
@@ -16,11 +16,17 @@ const __dirname = path.dirname(__filename)
 
 app.use(cors())
 
-app.get("/",(req,res)=>{
-    res.json({a:"a",b:"b"})
+app.get("/", (req, res) => {
+    console.log(req.user)
+    res.send(`Welcome to the root route. Google OAuth callback worked!`);
+});
+
+app.use("/auth",authRouter)
+app.get("/login",(req,res)=>{
+    res.send("redirected to login")
 })
 
-app.get(/^\/(.*)/,redirectRouter)
+app.get("/:shortURL",redirectRouter)
 
 app.listen(PORT, () => {
     console.log(`Listening on Port ${PORT}`);

@@ -1,0 +1,10 @@
+/* Styles for Nav */
+#lilurl {
+    color: var(--Accent-Color);
+    font-family: Pacifico, cursive;
+    font-size: 4em;
+}
+
+nav{
+    height: 6em;
+}

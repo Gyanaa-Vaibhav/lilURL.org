@@ -7,6 +7,8 @@ const userInitQuery =`
         username VARCHAR (255),
         email VARCHAR(255),
         password VARCHAR(255),
+        oauth_id VARCHAR(120),
+        oauth_provider VARCHAR(120),
         createdAT TIMESTAMP DEFAULT NOW()
     )
 `;

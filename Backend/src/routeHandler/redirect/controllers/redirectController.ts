@@ -5,7 +5,9 @@ import {shortenerService,addAnalyticsService} from "../../../services/servicesEx
 import {logError, logWarn} from "../../../services/logger/loggerExport.js";
 
 export async function renderRedirect(req:Request, res:Response) {
-    const shortURL = req.params[0];
+    const shortURL = req.params.shortURL;
+    console.log("ShortURL",shortURL)
+    if(!shortURL) return
     const returnURL = await shortenerService.getLongURL(shortURL)
     const linkID = returnURL?.linkID
     const {referrer,browser,os,deviceType,isBot,time,ip,isLocal} = getAnalyticsData(req)

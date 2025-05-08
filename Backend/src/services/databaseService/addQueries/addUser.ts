@@ -4,7 +4,9 @@ import {QueryResult} from "pg";
 type userData = {
     username:string,
     email:string,
-    password:string
+    password?:string,
+    oauth_id:string,
+    oauth_provider:string
 }
 
 /**
@@ -14,7 +16,7 @@ type userData = {
  */
 class AddUser implements AddInterface{
 
-    private static db = Database.getInstance();
+    private db = Database.getInstance();
 
     /**
      * Inserts a new user into the users table and returns the generated userID.
@@ -30,13 +32,13 @@ class AddUser implements AddInterface{
      * const { rows } = await AddUser.query(data);
      * console.log(rows[0].userID); // New user's ID
      */
-    public static async query({username, email, password}: userData): Promise<QueryResult<{ userid: string; any: any }>> {
-        const values = [username, email, password]
+    public async query({username, email, password,oauth_id,oauth_provider}: userData): Promise<QueryResult<{ userid: string; any: any }>> {
+        const values = [username, email, password,oauth_id,oauth_provider]
         const query =`
             INSERT INTO 
-                users(username,email,password)
+                users(username,email,password,oauth_id,oauth_provider)
             VALUES 
-                ($1,$2,$3)
+                ($1,$2,$3,$4,$5)
             RETURNING userID
         `;
         return await this.db.query(query, values)
