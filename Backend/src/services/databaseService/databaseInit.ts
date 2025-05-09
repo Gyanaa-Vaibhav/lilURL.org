@@ -37,3 +37,22 @@ const expiredLinksQuery = `
 `;
 const expiredLinksInitResult = await db.query(expiredLinksQuery)
 console.log(expiredLinksInitResult)
+
+
+const analyticsQuery = `
+    CREATE TABLE IF NOT EXISTS analyticsdata(
+        id         SERIAL PRIMARY KEY,
+        linkID     INT REFERENCES links (linkID),
+        shortURL   VARCHAR(255) REFERENCES links (shortURL),
+        referrer   VARCHAR(255),
+        browser    VARCHAR(100),
+        os         VARCHAR(100),
+        deviceType VARCHAR(50),
+        ip         VARCHAR(45),
+        location   VARCHAR(255),
+        isBot      BOOLEAN   DEFAULT false,
+        time       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+`
+const analyticsQueryResult = await db.query(analyticsQuery)
+console.log(analyticsQueryResult)

@@ -26,6 +26,8 @@
 
 .loginModal form {
     display: flex;
+    max-width: 350px;
+    width: 100%;
     flex-direction: column;
     gap: 1.5rem;
     /*padding: 1.5rem;*/
@@ -157,7 +159,7 @@
     width: 100%;
     color: rgb(255, 255, 255);
     background: rgb(42, 91, 215);
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 
 .loginButton:hover {
@@ -234,3 +236,24 @@
             "manual";
     }
 }
+
+#passwordErrors {
+    display: flex;
+    font-size: 13px;
+    padding: 0;
+    flex-direction: column;
+}
+
+#passwordErrors li{
+    list-style: none;
+    /*gap: 0.25rem;*/
+    display: flex;
+    align-items: center;
+}
+
+#passwordErrors li svg{
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.125rem;
+}
+

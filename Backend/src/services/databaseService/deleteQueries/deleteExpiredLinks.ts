@@ -65,4 +65,4 @@ class DeleteExpiredLinks implements DeleteInterface{
 }
 
 export const deleteExpiredLinkService = new DeleteExpiredLinks()
-await deleteExpiredLinkService.query({linkId:1})
+// await deleteExpiredLinkService.query({linkId:1})

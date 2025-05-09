@@ -62,12 +62,22 @@ export class PostgresDB{
     }
 }
 
+const host = process.env.DB_HOSTNAME
+const password = process.env.DB_PASSWORD
+const user = process.env.DB_USER;
+const port = Number(process.env.DB_PORT)
+const database = process.env.DB_NAME;
+
+if(!database || !host || !password || !user || !port ){
+    logError("env not configured, make sure you have .env available")
+}
+
 const pool = new Pool({
-    host: process.env.BD_HOSTNAME,
-    password: process.env.DB_PASSWORD,
-    user: process.env.DB_USER,
-    port: Number(process.env.DB_PORT),
-    database: process.env.DB_NAME,
+    host: host,
+    password: password,
+    user: user,
+    port: port,
+    database: database,
 })
 
 Database.initialiseDB(pool)

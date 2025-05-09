@@ -1,7 +1,6 @@
 import '../styles/Login.css';
 import * as React from "react";
 import {ShowPasswordIconButton} from "./ShowPasswordIconButton.tsx";
-import {validateInput} from "../utils/validateInput.ts";
 
 const Login = () => {
 
@@ -10,8 +9,8 @@ const Login = () => {
     const [email,setEmail] = React.useState<string>('')
     const [password,setPassword] = React.useState<string>('')
     const [showPasswordButton,setShowPasswordButton] = React.useState<boolean>(false)
+    const [errors,setErrors] = React.useState<{email?:string,password?:string}>({})
     const [showingPassword,setShowingPassword] = React.useState<boolean>(true)
-    const [errors,setErrors] = React.useState<{ email?: string; password?: string }>({});
 
     React.useEffect(()=>{
         if(password.length > 0) {
@@ -24,18 +23,25 @@ const Login = () => {
     function handelSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault()
         // Submit Logic
+        if(!password || !email) {
+            if(!password) setErrors(prev => ({email:prev.email, password:"Please enter your password"}))
+            if(!email) setErrors(prev => ({email:"Please enter your email address", password:prev.password}))
+            return
+        }
+        setErrors({})
+        console.log(email,password)
     }
 
     return (
         <>
             <nav className="loginNav">
-                <div><a id="lilurl" href="/">lilurl</a></div>
+                <div><a id="lilurl" href="/URL-Shortener/Frontend/public">lilurl</a></div>
             </nav>
             <div className="loginModal">
                 <form onSubmit={event => handelSubmit(event)}>
                     <div className="loginHeader">
                         <h1>Log in and start sharing</h1>
-                        <p className="">Don't have an account? <a href="/sign_up" className="">Sign Up</a></p>
+                        <p className="">Don't have an account? <a href="/sign-up" className="">Sign Up</a></p>
                     </div>
 
                     <div className='loginOptions'>
@@ -44,26 +50,15 @@ const Login = () => {
                                 <label>
                                     <div>Email</div>
                                     <input
-                                        style={{borderColor: `${errors.email ? 'red' : 'black'}`}}
-                                        onBlur={() => validateInput({setErrors, name:"Email", email, password})}
                                         onInput={(e) => {
-                                            setEmail(e.target.value)
-                                            validateInput({setErrors, name:"Email", email, password})
+                                            setEmail((e.target as HTMLInputElement).value)
                                         }}
                                         ref={emailRef}
                                         aria-invalid="false"
                                         aria-required="true"
                                     />
-                                    {errors.email && <small>{errors.email}</small>}
+                                    {errors.email && <small>{errors.email}</small> }
                                 </label>
-                                {email && !errors.email &&
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
-                                      className="greenTick" height="1em" width="1em"
-                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path fill="none" d="M0 0h24v24H0z"></path>
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-                                </svg>}
                         </div>
                             <div>
                                 {showPasswordButton &&
@@ -75,19 +70,14 @@ const Login = () => {
                                 <label>
                                     <div>Password</div>
                                     <input
-                                        style={{borderColor: `${errors.password ? 'red' : 'black'}`}}
-                                        onBlur={() => validateInput({setErrors, name:"Password", email, password})}
                                         ref={passwordRef}
                                         aria-invalid="false"
                                         aria-required="true"
                                         type={`${!showingPassword ? "text" : "password"}`}
                                         maxLength={256}
-                                        onInput={(e) => {
-                                            setPassword(e.target.value)
-                                            validateInput({setErrors, name:"Password", email, password})
-                                        }}
+                                        onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                                     />
-                                    {errors.password && <small>{errors.password}</small>}
+                                    {errors.password && <small>{errors.password}</small> }
                                 </label>
                             </div>
                             <a href="/forgot_password" className="forgotPassword">Forgot your password?</a>

@@ -58,4 +58,4 @@ class DeleteUser implements DeleteInterface{
 }
 
 export const deleteUserService = new DeleteUser();
-await deleteUserService.query({username:"Changed"})
+// await deleteUserService.query({username:"Changed"})

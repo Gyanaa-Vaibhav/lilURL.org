@@ -8,7 +8,7 @@ export default defineConfig({
     port:5172,
   },
   build:{
-    // outDir:'/var/www/html/Message-V2',
+    // outDir:'/var/www/html/lilURL',
     emptyOutDir:true
   },
   plugins: [react()],
