@@ -90,7 +90,7 @@
     box-sizing: border-box;
     width: 100%;
     padding: 0.5625rem 0.75rem;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     border: 0.0625rem solid rgb(219, 224, 235);
     margin: 0 0 0.5rem;
 }
@@ -207,7 +207,7 @@
     font-weight: 400;
     font-size: 1.6em;
     line-height: 1.25rem;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     cursor: pointer;
     color: rgb(39, 49, 68);
     background: rgb(255, 255, 255);

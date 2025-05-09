@@ -4,7 +4,7 @@ import * as path from "node:path";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import './services/servicesExport.js';
-import {authRouter, redirectRouter} from './routeHandler/routeHandlerExport.js'
+import {analyticsRouter, authRouter, redirectRouter} from './routeHandler/routeHandlerExport.js'
 
 dotenv.config()
 
@@ -25,6 +25,8 @@ app.use("/auth",authRouter)
 app.get("/login",(req,res)=>{
     res.send("redirected to login")
 })
+
+app.use("/analytics",analyticsRouter)
 
 app.get("/:shortURL",redirectRouter)
 

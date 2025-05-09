@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "d3": "^7.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.5.3"
+    "react-router": "^7.5.3",
+    "rsuite": "^5.80.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@types/d3": "^7.4.3",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",

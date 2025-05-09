@@ -8,6 +8,8 @@ export {
     getUserService,
     getExpiredLinksService,
     getLinkService,
+    getAnalyticsService,
+    getAnalyticsByLinkService,
 } from './databaseService/databaseExports.js'
 
 export {shortenerService} from './shortenerService/shortenerService.js'

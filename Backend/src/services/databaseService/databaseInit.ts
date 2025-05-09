@@ -44,6 +44,7 @@ const analyticsQuery = `
         id         SERIAL PRIMARY KEY,
         linkID     INT REFERENCES links (linkID),
         shortURL   VARCHAR(255) REFERENCES links (shortURL),
+        userID     INT REFERENCES users (userID),
         referrer   VARCHAR(255),
         browser    VARCHAR(100),
         os         VARCHAR(100),

@@ -6,6 +6,8 @@ export {
     getUserService,
     getLinkService,
     getExpiredLinksService,
+    getAnalyticsService,
+    getAnalyticsByLinkService,
 } from './getQueries/getExports.js'
 
 
