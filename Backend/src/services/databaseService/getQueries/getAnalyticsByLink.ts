@@ -28,19 +28,21 @@ class GetAnalyticsByLink implements GetInterface {
     private async byDeviceType(id:number,start:string,end:string){
         const value = [id,start,end]
         const query = `
-            SELECT
-                CASE
-                    WHEN deviceType ILIKE '%mobile%' THEN 'Mobile'
-                    WHEN deviceType ILIKE '%tablet%' THEN 'Tablet'
-                    WHEN deviceType ILIKE '%tv%' THEN 'TV'
-                    WHEN deviceType ILIKE '%bot%' OR isBot = true THEN 'Bot'
-                    WHEN deviceType ILIKE '%desktop%' OR deviceType ILIKE '%pc%' THEN 'Desktop'
-                    ELSE 'Others'
-                    END AS device_type,
-                COUNT(*) AS count
-            FROM analyticsdata
-            WHERE linkID = $1 AND time BETWEEN $2 AND $3
-            GROUP BY device_type;
+            SELECT devicetype, COUNT(*) AS count
+            FROM (
+                     SELECT
+                         CASE
+                             WHEN isBot = true THEN 'Bot'
+                             WHEN deviceType ILIKE '%mobile%' THEN 'Mobile'
+                             WHEN deviceType ILIKE '%tablet%' THEN 'Tablet'
+                             WHEN deviceType ILIKE '%tv%' THEN 'TV'
+                             WHEN deviceType ILIKE '%desktop%' OR deviceType ILIKE '%pc%' THEN 'Desktop'
+                             ELSE 'Others'
+                             END AS devicetype
+                     FROM analyticsdata
+                     WHERE linkID = $1 AND time BETWEEN $2 AND $3
+                 ) AS sub
+            GROUP BY devicetype;
         `
         return this.db.query(query, value);
     }

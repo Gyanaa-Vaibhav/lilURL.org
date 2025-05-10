@@ -10,6 +10,7 @@ export function DevicePie({ data }: Props) {
     const svgRef = React.useRef<SVGSVGElement | null>(null);
     const [containerRef, dimensions] = useResizeObserver<HTMLDivElement>();
 
+    console.log(data)
     React.useEffect(() => {
         if (!svgRef.current || dimensions.width === 0 || dimensions.height === 0) return;
         const deviceColors: Record<string, string> = {
