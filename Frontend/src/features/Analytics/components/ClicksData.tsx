@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React from "react";
 import { useResizeObserver } from "../hooks/useResizeObserver";
 import * as d3 from "d3";

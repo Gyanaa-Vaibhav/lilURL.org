@@ -10,8 +10,8 @@ export const analyticsRouter = Router();
 
 // TODO need to redirect / to react
 // Default route to render the analytics page
-analyticsRouter.get('/:linkId', renderAnalytics);
 analyticsRouter.use(timeCheckMiddleware);
+analyticsRouter.get('/:userId', renderAnalytics);
 analyticsRouter.get("/:linkId/geo", geoAnalytics);
 analyticsRouter.get("/:linkId/os", osAnalytics);
 analyticsRouter.get("/:linkId/devices", deviceAnalytics);
