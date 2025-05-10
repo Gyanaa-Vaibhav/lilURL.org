@@ -4,6 +4,7 @@ import { DateRangePicker } from 'rsuite';
 import {DevicePie} from "./DevicePie.tsx";
 import  {useEffect, useState} from "react";
 import {OsPie} from "./OsPie.tsx";
+import {ClicksData} from "./ClicksData.tsx";
 
 const url = import.meta.env.VITE_SERVER ? `${import.meta.env.VITE_SERVER}/analytics` : "/analytics";
 // TODO fetch data like this fetch(`/analytics/${linkID}/geo?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)&granularity=${granularity}}`) and date should be in .toISOString() granularity for day and hourly data 'hourly' : 'daily'
@@ -14,25 +15,32 @@ const url = import.meta.env.VITE_SERVER ? `${import.meta.env.VITE_SERVER}/analyt
 const Analytics = () => {
     const [deviceData, setDeviceData] = useState([]);
     const [osData, setOsData] = useState([]);
+    const [clickData, setClickData] = useState([]);
     const [startDate, setStartDate] = useState<string>(new Date().toISOString());
     const [endDate, setEndDate] = useState<string>(new Date().toISOString());
     const { afterToday } = DateRangePicker;
 
+    // TODO NEED TO CHANGE THE Static 1 to link
     useEffect(() => {
-            const granularity = startDate === endDate ? 'hourly' : 'daily';
         async function getDeviceData(){
-            const deviceResult = await fetch(`${url}/1/devices?start=${startDate}&end=${endDate}&granularity=${granularity}`)
+            const deviceResult = await fetch(`${url}/1/devices?start=${startDate}&end=${endDate}`)
             const data = await deviceResult.json();
             setDeviceData(data.data);
         }
 
         async function getOSData(){
-            const deviceResult = await fetch(`${url}/1/os?start=${startDate}&end=${endDate}&granularity=${granularity}`)
+            const deviceResult = await fetch(`${url}/1/os?start=${startDate}&end=${endDate}`)
             const data = await deviceResult.json();
             setOsData(data.data);
         }
 
+        async function getClickData(){
+            const deviceResult = await fetch(`${url}/1/clicks?start=${startDate}&end=${endDate}`)
+            const data = await deviceResult.json();
+            setClickData(data.data);
+        }
 
+        getClickData().then();
         getDeviceData().then();
         getOSData().then();
 
@@ -41,6 +49,7 @@ const Analytics = () => {
 
     return (
         <>
+            <div id="tooltip"></div>
             <DateRangePicker
                 value={[new Date(startDate),new Date(endDate)]}
                 size="lg"
@@ -50,8 +59,6 @@ const Analytics = () => {
                         const [start, end] = value;
                         setEndDate(end.toISOString())
                         setStartDate(start.toISOString());
-                        console.log('Start:', start.toISOString());
-                        console.log('End:', end.toISOString());
                     }
                 }}
                 format="yyyy-MM-dd"
@@ -61,6 +68,7 @@ const Analytics = () => {
 
             <DevicePie data={deviceData} />
             <OsPie data={osData} />
+            <ClicksData data={clickData}/>
         </>
     );
 }

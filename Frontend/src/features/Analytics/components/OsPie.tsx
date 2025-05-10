@@ -1,53 +1,32 @@
 import React from "react";
 import * as d3 from 'd3';
+import {useResizeObserver} from "../hooks/useResizeObserver.tsx";
 
 type Props = {
     data: { os: string; count: string }[];
 };
 
 export function OsPie({ data }: Props) {
-    console.log(data)
-    const containerRef = React.useRef<HTMLDivElement | null>(null);
     const svgRef = React.useRef<SVGSVGElement | null>(null);
-    const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
-
-    // Resize observer to update chart size
-    React.useEffect(() => {
-        const observer = new ResizeObserver(entries => {
-            for (const entry of entries) {
-                const { width, height } = entry.contentRect;
-                setDimensions({ width, height });
-            }
-        });
-
-        if (containerRef.current) {
-            observer.observe(containerRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, []);
-
-    // React.useEffect(()=>{
-    //     if (!svgRef.current || dimensions.width === 0 || dimensions.height === 0) return;
-    //
-    //     const svg = d3.select(svgRef.current);
-    //     svg.selectAll("*").remove(); // clear any old junk
-    //
-    //     const radius = Math.min(dimensions.width, dimensions.height) / 2;
-    //
-    //     const color = d3.scaleOrdinal(d3.schemeCategory10);
-    //
-    //
-    // })
+    const [containerRef, dimensions] = useResizeObserver<HTMLDivElement>();
 
     React.useEffect(() => {
         if (!svgRef.current || dimensions.width === 0 || dimensions.height === 0) return;
+
+        const osColors: Record<string, string> = {
+            Android: "#3DDC84",
+            iOS: "#FF3B30",
+            MacOS: "#A389D4",
+            Windows: "#00A4EF",
+            Linux: "#FFA500",
+            Others: "#B0B0B0",
+        };
 
         const svg = d3.select(svgRef.current);
         svg.selectAll("*").remove(); // clear previous chart
 
         const radius = Math.min(dimensions.width, dimensions.height) / 2;
-        const color = d3.scaleOrdinal(d3.schemeCategory10);
+        // const color = d3.scaleOrdinal(d3.schemeCategory10);
 
         const pie = d3.pie<{ os: string; count: string }>()
             .value(d => Number(d.count));
@@ -66,7 +45,31 @@ export function OsPie({ data }: Props) {
 
         arcs.append("path")
             .attr("d", arc)
-            .attr("fill", (_, i) => color(i.toString()));
+            .attr("fill", d => osColors[d.data.os] || "#CCCCCC")
+            .on("mouseover", function (_event, d) {
+                d3.select(this)
+                    .transition()
+                    .duration(150)
+                    .attr("transform", "scale(1.1)");
+
+                d3.select("#tooltip")
+                    .style("display", "block")
+                    .html(`${d.data.os}: ${d.value}`);
+            })
+            .on("mousemove", (event) => {
+                d3.select("#tooltip")
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 20) + "px");
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                    .transition()
+                    .duration(150)
+                    .attr("transform", "scale(1)");
+
+                d3.select("#tooltip").style("display", "none");
+            });
+
 
         arcs.append("text")
             .attr("transform", d => `translate(${arc.centroid(d)})`)
@@ -74,7 +77,21 @@ export function OsPie({ data }: Props) {
             .attr("alignment-baseline", "middle")
             .text(d => `${d.data.os[0].toUpperCase()}${d.data.os.slice(1)}`)
             .style("font-size", "12px")
-            .style("fill", "#fff");
+            .style("fill", "#000000")
+            .style("font-family", "Manrope-Bold, sans-serif")
+            .on("mouseover", (_event, d) => {
+                d3.select("#tooltip")
+                    .style("display", "block")
+                    .html(`${d.data.os}: ${d.value}`);
+            })
+            .on("mousemove", (event) => {
+                d3.select("#tooltip")
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 20) + "px");
+            })
+            .on("mouseout", () => {
+                d3.select("#tooltip").style("display", "none");
+            });
 
     }, [data, dimensions]);
 

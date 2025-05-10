@@ -28,10 +28,19 @@ class GetAnalyticsByLink implements GetInterface {
     private async byDeviceType(id:number,start:string,end:string){
         const value = [id,start,end]
         const query = `
-            SELECT deviceType, COUNT(*) AS count
+            SELECT
+                CASE
+                    WHEN deviceType ILIKE '%mobile%' THEN 'Mobile'
+                    WHEN deviceType ILIKE '%tablet%' THEN 'Tablet'
+                    WHEN deviceType ILIKE '%tv%' THEN 'TV'
+                    WHEN deviceType ILIKE '%bot%' OR isBot = true THEN 'Bot'
+                    WHEN deviceType ILIKE '%desktop%' OR deviceType ILIKE '%pc%' THEN 'Desktop'
+                    ELSE 'Others'
+                    END AS device_type,
+                COUNT(*) AS count
             FROM analyticsdata
             WHERE linkID = $1 AND time BETWEEN $2 AND $3
-            GROUP BY deviceType;
+            GROUP BY device_type;
         `
         return this.db.query(query, value);
     }
@@ -62,7 +71,16 @@ class GetAnalyticsByLink implements GetInterface {
     private async byOS(id:number,start:string,end:string){
         const value = [id,start,end];
         const query = `
-            SELECT os, COUNT(*) AS count
+            SELECT
+                CASE
+                    WHEN os ILIKE 'Android' THEN 'Android'
+                    WHEN os ILIKE 'iOS' THEN 'iOS'
+                    WHEN os ILIKE 'MacOS' THEN 'MacOS'
+                    WHEN os ILIKE 'Windows' THEN 'Windows'
+                    WHEN os ILIKE 'Linux' THEN 'Linux'
+                    ELSE 'Others'
+                    END AS os,
+                COUNT(*) AS count
             FROM analyticsdata
             WHERE linkID = $1 AND time BETWEEN $2 AND $3
             GROUP BY os;
@@ -73,18 +91,35 @@ class GetAnalyticsByLink implements GetInterface {
     private async byClickHour(id:number,start:string,end:string){
         const value = [id,start,end];
         const query = `
-            SELECT EXTRACT(HOUR FROM time) AS hour, COUNT(*) AS count
+            SELECT DATE_TRUNC('hour', time) AS id, COUNT(*) AS value
             FROM analyticsdata
             WHERE linkID = $1 AND time BETWEEN $2 AND $3
-            GROUP BY hour
-            ORDER BY hour;
+            GROUP BY id
+            HAVING COUNT(*) > 0
+            ORDER BY id;
+--             WITH hours AS (
+--                 SELECT generate_series(
+--                                date_trunc('hour', $2::timestamp),
+--                                date_trunc('hour', $3::timestamp),
+--                                interval '1 hour'
+--                        ) AS id
+--             )
+--             SELECT
+--                 h.id,
+--                 COALESCE(COUNT(a.*), 0) AS value
+--             FROM hours h
+--                      LEFT JOIN analyticsdata a
+--                                ON date_trunc('hour', a.time) = h.id
+--                                    AND a.linkID = $1
+--             GROUP BY h.id
+--             ORDER BY h.id;
         `
         return this.db.query(query, value);
     }
 }
 
 export const getAnalyticsByLinkService = new GetAnalyticsByLink();
-// const start = '2025-04-09T00:00:00.000Z';
+// const start = '2025-05-03T00:00:00.000Z';
 // const end = '2025-05-09T23:59:59.999Z';
-// const {rows} = await getAnalyticsByLinkService.query({os:1,start,end})
+// const {rows} = await getAnalyticsByLinkService.query({clicksHour:1,start,end})
 // console.log(rows)

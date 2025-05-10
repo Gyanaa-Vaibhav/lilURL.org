@@ -1,1 +1,14 @@
 /* Styles for Analytics */
+#tooltip {
+    position: absolute;
+    display: none;
+    background: #F3F3E0;
+    color: #183B4E;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: Manrope-Bold, sans-serif;
+    border: 1px solid #DDA853;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    pointer-events: none;
+}

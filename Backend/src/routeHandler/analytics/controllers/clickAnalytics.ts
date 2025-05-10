@@ -6,20 +6,18 @@ export async function clickAnalytics(req:Request,res:Response){
     const linkId = req.params.linkId;
     const start = req.query.start as string;
     const end = req.query.end as string;
-    const granularity = req.query.granularity as string;
-    if(granularity === 'daily'){
-        await getDataByDays(Number(linkId),start,end,res);
-        return
-    }
-    if (granularity === 'hourly') {
-        await getDataByHour(Number(linkId),start,end,res)
-        return
-    }
+    // const granularity = req.query.granularity as string;
+    await getDataByDays(Number(linkId),start,end,res);
+    return
 }
 
 async function getDataByDays(linkId:number,start:string,end:string,res:Response){
     const {rows} = await getAnalyticsByLinkService.query({clicks:linkId,start,end})
+    const totalDays = dayjs(end).diff(dayjs(start), 'day') + 1;
 
+    if (rows.length < 50 && totalDays < 7) {
+        return getDataByHour(linkId, start, end, res);
+    }
     const rowMap = new Map(
         rows.map((row) => [dayjs(row.day).format('YYYY-MM-DD'), Number(row.count)])
     );
@@ -40,31 +38,11 @@ async function getDataByDays(linkId:number,start:string,end:string,res:Response)
 }
 
 async function getDataByHour(linkId:number,start:string,end:string,res:Response){
-    const diffDays = dayjs(end).diff(dayjs(start), 'day');
-
-    if (diffDays > 0) {
-        res.status(400).json({
-            success: false,
-            message: "Hourly data is only supported for a single day. Please adjust your date range."
-        });
-        return;
-    }
-
     const { rows } = await getAnalyticsByLinkService.query({
         clicksHour: linkId,
         start,
         end
     });
-
-    const result = Array.from({ length: 24 }, (_, hour) => ({
-        hour,
-        count: 0,
-    }));
-
-    rows.forEach((row) => {
-        const h = Number(row.hour);
-        result[h].count = Number(row.count);
-    });
-
-    res.json({success: true, message: "Click Analytics", data: result});
+    res.json({success: true, message: "Click Analytics", data: rows});
+    return
 }
