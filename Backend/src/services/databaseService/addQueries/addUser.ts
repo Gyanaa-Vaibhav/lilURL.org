@@ -4,9 +4,9 @@ import {QueryResult} from "pg";
 type userData = {
     username:string,
     email:string,
-    password?:string,
-    oauth_id:string,
-    oauth_provider:string
+    password:string,
+    oauth_id?:string,
+    oauth_provider?:string
 }
 
 /**

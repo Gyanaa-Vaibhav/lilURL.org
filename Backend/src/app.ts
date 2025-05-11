@@ -15,7 +15,7 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 
 app.use(cors())
-
+app.use(express.json())
 app.get("/", (req, res) => {
     console.log(req.user)
     res.send(`Welcome to the root route. Google OAuth callback worked!`);

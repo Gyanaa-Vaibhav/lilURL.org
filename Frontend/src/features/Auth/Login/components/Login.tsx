@@ -1,9 +1,9 @@
 import '../styles/Login.css';
 import * as React from "react";
 import {ShowPasswordIconButton} from "./ShowPasswordIconButton.tsx";
+const url = import.meta.env.VITE_SERVER ? `${import.meta.env.VITE_SERVER}/auth/login` : "/auth/login";
 
 const Login = () => {
-
     const emailRef = React.createRef<HTMLInputElement>()
     const passwordRef = React.createRef<HTMLInputElement>()
     const [email,setEmail] = React.useState<string>('')
@@ -29,7 +29,15 @@ const Login = () => {
             return
         }
         setErrors({})
-        console.log(email,password)
+        fetch(url,({
+            method:"POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({email:email,password:password}),
+        }))
+            .then((res)=>res.json())
+            .then(res=>console.log(res))
     }
 
     return (

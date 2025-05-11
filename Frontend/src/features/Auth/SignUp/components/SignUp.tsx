@@ -4,6 +4,7 @@ import {validateInput} from "../../Login/utils/validateInput.ts";
 import {ShowPasswordIconButton} from "../../Login/components/ShowPasswordIconButton.tsx";
 import {correct} from "../../Login/components/correct.tsx";
 import {wrong} from "../../Login/components/wrong.tsx";
+const url = import.meta.env.VITE_SERVER ? `${import.meta.env.VITE_SERVER}/auth/sign-up` : "/auth/sign-up";
 
 export default function SignUp() {
     const emailRef = React.createRef<HTMLInputElement>()
@@ -31,6 +32,19 @@ export default function SignUp() {
     function handelSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault()
         // Submit Logic
+        if (!errors.email && !errors.password) {
+            console.log("Fetching")
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: email, password: password }),
+            })
+                .then((res) => res.json())
+                .then((res) => console.log(res));
+        }
+
     }
 
     return (
