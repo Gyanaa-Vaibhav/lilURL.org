@@ -3,6 +3,7 @@
 import React from "react";
 import { useResizeObserver } from "../hooks/useResizeObserver";
 import * as d3 from "d3";
+import '../styles/ClicksData.css'
 
 type Props = {
     data: { day: string; count: string }[];
@@ -102,11 +103,10 @@ export function ClicksData({ data }: Props) {
 
     return (
         <div
+            id="clicks-chart"
             ref={containerRef}
             style={{
-                minHeight:"200px",
-                width: "100%",
-                height: "100%",
+                // minHeight:"200px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

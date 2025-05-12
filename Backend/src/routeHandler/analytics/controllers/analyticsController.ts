@@ -8,7 +8,11 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
     const userId = req.params.userId || req.user?.userId;
     const start = req.query.start as string;
     const end = req.query.end as string;
+
     const {rows} = await getAnalyticsService.query({userID:Number(userId),start,end})
+
+    let qrClicks = 0;
+    let linkClicks = 0;
     const grouped: {
         device: Record<string, number>;
         os: Record<string, number>;
@@ -22,6 +26,11 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
     };
 
     for (const row of rows) {
+        if (row.qr) {
+            qrClicks++;
+        } else {
+            linkClicks++;
+        }
         // Device
         const device = row.isbot ? "Bot" :
             /mobile/i.test(row.devicetype) ? "Mobile" :
@@ -40,5 +49,22 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
         const day = dayjs(row.time).format("YYYY-MM-DD");
         grouped.click[day] = (grouped.click[day] || 0) + 1;
     }
-    res.json({success:true, linkId: userId,data:grouped,impression:rows.length})
+
+    const formatted = {
+        success: true,
+        userId,
+        data: {
+            device: Object.entries(grouped.device).map(([devicetype, count]) => ({ devicetype, count })),
+            os: Object.entries(grouped.os).map(([os, count]) => ({ os, count })),
+            location: Object.entries(grouped.location).map(([location, count]) => ({ location, count })),
+            click: Object.entries(grouped.click).map(([day, count]) => ({ day, count })),
+        },
+        qrStats: {
+            qrClicks,
+            linkClicks
+        },
+        impression: rows.length,
+    };
+
+    res.json(formatted)
 }

@@ -37,7 +37,13 @@ const Login = () => {
             body:JSON.stringify({email:email,password:password}),
         }))
             .then((res)=>res.json())
-            .then(res=>console.log(res))
+            .then((res)=>{
+                localStorage.setItem('accessToken', res.accessToken)
+                console.log(res)
+                if(res.success){
+                    window.location.href = '/dashboard'
+                }
+            })
     }
 
     return (

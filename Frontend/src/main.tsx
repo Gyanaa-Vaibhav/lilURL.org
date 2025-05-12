@@ -6,6 +6,7 @@ import {BrowserRouter, Route, Routes} from "react-router";
 import Login from "./features/Auth/Login/components/Login.tsx";
 import SignUp from "./features/Auth/SignUp/components/SignUp.tsx";
 import Analytics from "./features/Analytics/components/Analytics.tsx";
+import {MainDashboard} from "./features/Analytics/components/MainDashboard.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path='/sign-in' element={<Login/>}/>
               <Route path='/sign-up' element={<SignUp/>}/>
               <Route path='/analytics' element={<Analytics/>}/>
+              <Route path='/dashboard' element={<MainDashboard/>}/>
               {/*<Route path='/chat' element={<MainChat/>}/>*/}
           </Routes>
       </BrowserRouter>

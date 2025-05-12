@@ -14,7 +14,6 @@ export async function renderRedirect(req:Request, res:Response) {
     const location = await getIpLocation(ip);
 
     if(!linkID || !returnURL.longURL){
-        // TODO change to lilurl.org
         res.redirect(302, "https://www.lilurl.org");
         return ;
     }

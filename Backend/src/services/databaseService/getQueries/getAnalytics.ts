@@ -8,7 +8,6 @@ class GetAnalytics implements GetInterface {
     private db = Database.getInstance()
 
     public async query(input:QueryInput):Promise<QueryResult<any>>{
-        console.log(input)
         if(input.userID) return this.byUserId(input.userID,input.start,input.end);
         if(input.linkID) return this.byLinkId(input.linkID);
         if(input.shortURL) return this.byShortURL(input.shortURL);

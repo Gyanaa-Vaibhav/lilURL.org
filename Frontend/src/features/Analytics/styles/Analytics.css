@@ -7,6 +7,7 @@
     padding: 6px 10px;
     border-radius: 6px;
     font-size: 14px;
+    z-index: 1000000;
     font-family: Manrope-Bold, sans-serif;
     border: 1px solid #DDA853;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);

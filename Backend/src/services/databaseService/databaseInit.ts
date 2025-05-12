@@ -52,6 +52,7 @@ const analyticsQuery = `
         ip         VARCHAR(45),
         location   VARCHAR(255),
         isBot      BOOLEAN   DEFAULT false,
+        qr         BOOLEAN DEFAULT false,
         time       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 `

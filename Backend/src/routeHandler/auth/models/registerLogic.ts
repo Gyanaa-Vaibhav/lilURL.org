@@ -13,6 +13,12 @@ export async function registerLogic(req:Request, res:Response){
     const password = req.body.password;
     const hashedPassword = await hashService.hashString(password);
 
-    // const {rows} = await addUserService.query({username:username[0],email,password:hashedPassword})
+    const addUser = await addUserService.query({username:username[0],email,password:hashedPassword})
+    const userId = addUser.rows[0].userid
+    const accessToken = jwtService.signAccessToken({userId,username,email})
+    const refreshToken = jwtService.signRefreshToken({userId,username,email})
+    // TODO set secure to true while in development
+    res.cookie("refreshToken", refreshToken, {httpOnly:true,secure:false});
+    res.json({success: true, token: accessToken})
 
 }

@@ -1,0 +1,46 @@
+#analyticsHolder {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* or 1fr 1fr if equal */
+    grid-template-rows: repeat(2, 1fr); /* ensures vertical fill */
+    gap: 1rem;
+    margin-top: 1rem;
+    /*height: 100%; !* important *!*/
+}
+
+#analyticsHolder > * {
+    width: 100%;
+    border-radius: 16px;
+    max-height: fit-content;
+    min-height: 300px;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+}
+
+#analyticsHolder > :nth-child(1) { grid-column: 3; grid-row: 2; } /* OsPie */
+#analyticsHolder > :nth-child(2) { grid-column: 3; grid-row: 1; } /* DevicePie */
+#analyticsHolder > :nth-child(3) { grid-column: 1/3; grid-row: 1; } /* ClicksData */
+#analyticsHolder > :nth-child(4) { grid-column: 1/3; grid-row: 2; } /* GeoData */
+
+.dashboard {
+    width: 100vw;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard > div:nth-child(2) {
+    /*height: 100%; !* or 100% if inside another flex container *!*/
+    display: flex;
+    flex-direction: column;
+}
+
+.analyticsMain {
+    width: 100%;
+    padding: 2rem 2.5rem;
+    overflow: auto;
+}
+
+.calender {
+    max-width: fit-content;
+}

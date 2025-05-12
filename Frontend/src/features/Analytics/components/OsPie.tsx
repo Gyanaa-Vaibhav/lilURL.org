@@ -1,6 +1,7 @@
 import React from "react";
 import * as d3 from 'd3';
 import {useResizeObserver} from "../hooks/useResizeObserver.tsx";
+import '../styles/OsPie.css'
 
 type Props = {
     data: { os: string; count: string }[];
@@ -9,18 +10,18 @@ type Props = {
 export function OsPie({ data }: Props) {
     const svgRef = React.useRef<SVGSVGElement | null>(null);
     const [containerRef, dimensions] = useResizeObserver<HTMLDivElement>();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const osColors: Record<string, string> = {
+        android: "#3DDC84",
+        ios: "#FF3B30",
+        macos: "#A389D4",
+        windows: "#00A4EF",
+        linux: "#FFA500",
+        others: "#B0B0B0",
+    };
 
     React.useEffect(() => {
         if (!svgRef.current || dimensions.width === 0 || dimensions.height === 0) return;
-
-        const osColors: Record<string, string> = {
-            Android: "#3DDC84",
-            iOS: "#FF3B30",
-            MacOS: "#A389D4",
-            Windows: "#00A4EF",
-            Linux: "#FFA500",
-            Others: "#B0B0B0",
-        };
 
         const svg = d3.select(svgRef.current);
         svg.selectAll("*").remove(); // clear previous chart
@@ -29,10 +30,11 @@ export function OsPie({ data }: Props) {
         // const color = d3.scaleOrdinal(d3.schemeCategory10);
 
         const pie = d3.pie<{ os: string; count: string }>()
-            .value(d => Number(d.count));
+            .value(d => Number(d.count))
+            .padAngle(0.015); // smooth spacing
 
         const arc = d3.arc<d3.PieArcDatum<{ os: string; count: string }>>()
-            .innerRadius(0)
+            .innerRadius(radius * 0.35)
             .outerRadius(radius - 10);
 
         const g = svg.append("g")
@@ -45,12 +47,18 @@ export function OsPie({ data }: Props) {
 
         arcs.append("path")
             .attr("d", arc)
-            .attr("fill", d => osColors[d.data.os] || "#CCCCCC")
+            .attr("fill", d => {
+                const base = osColors[d.data.os.toLowerCase()] || "#CCCCCC";
+                return d3.color(base)?.darker(0.3).toString(); // richer tone
+            })
+            .attr("stroke", d => osColors[d.data.os.toLowerCase()] || "#CCCCCC")
+            .attr("stroke-width", 1.5)
             .on("mouseover", function (_event, d) {
                 d3.select(this)
-                    .transition()
-                    .duration(150)
-                    .attr("transform", "scale(1.1)");
+                    .transition().duration(150)
+                    .attr("stroke-width", 2)
+                    .attr("stroke", "#000")
+                    .attr("transform", "scale(1.05)")
 
                 d3.select("#tooltip")
                     .style("display", "block")
@@ -63,8 +71,9 @@ export function OsPie({ data }: Props) {
             })
             .on("mouseout", function () {
                 d3.select(this)
-                    .transition()
-                    .duration(150)
+                    .transition().duration(150)
+                    .attr("stroke-width", 1)
+                    .attr("stroke", "none")
                     .attr("transform", "scale(1)");
 
                 d3.select("#tooltip").style("display", "none");
@@ -75,7 +84,10 @@ export function OsPie({ data }: Props) {
             .attr("transform", d => `translate(${arc.centroid(d)})`)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
-            .text(d => `${d.data.os[0].toUpperCase()}${d.data.os.slice(1)}`)
+            .text(d => {
+                const percent = ((d.value / d3.sum(data.map(d => +d.count))) * 100).toFixed(1);
+                return `${percent}%`;
+            })
             .style("font-size", "12px")
             .style("fill", "#000000")
             .style("font-family", "Manrope-Bold, sans-serif")
@@ -93,25 +105,65 @@ export function OsPie({ data }: Props) {
                 d3.select("#tooltip").style("display", "none");
             });
 
-    }, [data, dimensions]);
+    }, [data, dimensions, osColors]);
 
     return (
         <div
-            ref={containerRef}
             style={{
-                minHeight:"200px",
+                // maxWidth: "320px",
                 width: "100%",
-                height: "100%",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center",
+                gap: "1rem",
+                margin: "0 auto",
+                background: "#fff",
+                borderRadius: "16px",
+                padding: "1rem",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
             }}
         >
-            <svg
-                ref={svgRef}
-                width={dimensions.width}
-                height={dimensions.height}
-            />
+            <div className="chart-legend" style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
+                {data.map((item, index) => (
+                    <div key={index} className="legend-item" style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem" }}>
+        <span
+            className="legend-color"
+            style={{
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: osColors[item.os.toLowerCase()] || "#ccc",
+                display: "inline-block",
+            }}
+        />
+                        <span style={{ color: "#333", fontWeight: 500 }}>{item.os}</span>
+                    </div>
+                ))}
+            </div>
+
+            <div
+                ref={containerRef}
+                style={{
+                    width: "100%",
+                    height: "100%", // important!
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    maxHeight:"fit-content",
+                    overflow: "hidden" // stops overflow
+                }}
+            >
+                <svg
+                    ref={svgRef}
+                    viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+                    preserveAspectRatio="xMidYMid meet"
+                    style={{
+                        width: "100%",
+                        height: "200px",
+                        minHeight:"fit-content",
+                    }}
+                />
+            </div>
         </div>
     );
 }

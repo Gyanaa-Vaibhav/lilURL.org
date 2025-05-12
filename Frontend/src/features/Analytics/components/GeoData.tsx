@@ -3,6 +3,7 @@
 import React from "react";
 import {useResizeObserver} from "../hooks/useResizeObserver.tsx";
 import * as d3 from "d3";
+import '../styles/GeoData.css'
 
 type Props = {
     data: { location: string; count: string }[];
@@ -12,6 +13,7 @@ export function GeoData({data}: Props) {
     const [containerRef, dimensions] = useResizeObserver<HTMLDivElement>();
 
     React.useEffect(() => {
+        if(!data.length) return;
         if (!svgRef.current || dimensions.width === 0 || dimensions.height === 0) return;
 
         const svg = d3.select(svgRef.current);
@@ -75,11 +77,10 @@ export function GeoData({data}: Props) {
 
     return (
         <div
+            id='geo-world'
             ref={containerRef}
             style={{
-                minHeight:"200px",
-                width: "100%",
-                height: "100%",
+                // minHeight:"200px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

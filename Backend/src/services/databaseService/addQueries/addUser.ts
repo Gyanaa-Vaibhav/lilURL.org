@@ -4,7 +4,7 @@ import {QueryResult} from "pg";
 type userData = {
     username:string,
     email:string,
-    password:string,
+    password?:string,
     oauth_id?:string,
     oauth_provider?:string
 }
@@ -39,7 +39,7 @@ class AddUser implements AddInterface{
                 users(username,email,password,oauth_id,oauth_provider)
             VALUES 
                 ($1,$2,$3,$4,$5)
-            RETURNING userID
+            RETURNING userID,username
         `;
         return await this.db.query(query, values)
     }
@@ -48,5 +48,5 @@ class AddUser implements AddInterface{
 export const addUserService = new AddUser()
 
 // const data = {username:"test",email:"from@server.com",password:"test456"}
-// const { rows } = await AddUser.query(data);
-// console.log(rows[0]?.userid)
+// const { rows } = await addUserService.query(data);
+// console.log(rows[0])

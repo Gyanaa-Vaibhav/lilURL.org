@@ -6,57 +6,67 @@ import  {useEffect, useState} from "react";
 import {OsPie} from "./OsPie.tsx";
 import {ClicksData} from "./ClicksData.tsx";
 import {GeoData} from "./GeoData.tsx";
+import {fetchWithAuth, initialFetch} from "../hooks/fetchWithAuth.tsx";
 
 const url = import.meta.env.VITE_SERVER ? `${import.meta.env.VITE_SERVER}/analytics` : "/analytics";
 // TODO fetch data like this fetch(`/analytics/${linkID}/geo?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`) and date should be in .toISOString()
-// TODO Fetch date for above or have something custom
-// fetch(`${url}/1/clicks?start=2025-05-09T12:00:00.000Z&end=2025-05-09T23:59:59.999Z&granularity=hourly`).then(res => res.json()).then(data => console.log(data))
-
 
 const Analytics = () => {
     const [startDate, setStartDate] = useState<string>(new Date().toISOString());
     const [endDate, setEndDate] = useState<string>(new Date().toISOString());
+    const [allowed,setAllowed] = useState<boolean>(false);
 
     const [deviceData, setDeviceData] = useState([]);
     const [osData, setOsData] = useState([]);
     const [clickData, setClickData] = useState([]);
     const [geoData, setGeoData] = useState([]);
-
     const { afterToday } = DateRangePicker;
+
+    useEffect(() => {
+        async function boot() {
+            const authSuccess = await initialFetch();
+            if (authSuccess) {
+                setAllowed(true);
+            }
+        }
+
+        boot().then();
+    }, []);
 
     // TODO NEED TO CHANGE THE Static 1 to link
     useEffect(() => {
+        if(!allowed) return;
+
         async function getDeviceData(){
-            const deviceResult = await fetch(`${url}/1/devices?start=${startDate}&end=${endDate}`)
+            const deviceResult = await fetchWithAuth(`${url}/1/devices?start=${startDate}&end=${endDate}`)
             const data = await deviceResult.json();
             setDeviceData(data.data);
         }
 
         async function getOSData(){
-            const deviceResult = await fetch(`${url}/1/os?start=${startDate}&end=${endDate}`)
+            const deviceResult = await fetchWithAuth(`${url}/1/os?start=${startDate}&end=${endDate}`)
             const data = await deviceResult.json();
             setOsData(data.data);
         }
 
         async function getClickData(){
-            const deviceResult = await fetch(`${url}/1/clicks?start=${startDate}&end=${endDate}`)
+            const deviceResult = await fetchWithAuth(`${url}/1/clicks?start=${startDate}&end=${endDate}`)
             const data = await deviceResult.json();
             setClickData(data.data);
         }
 
         async function getGeoData(){
-            const deviceResult = await fetch(`${url}/1/geo?start=${startDate}&end=${endDate}`)
+            const deviceResult = await fetchWithAuth(`${url}/1/geo?start=${startDate}&end=${endDate}`)
             const data = await deviceResult.json();
             setGeoData(data.data);
         }
 
+        getDeviceData().then();
         getGeoData().then();
         getClickData().then();
-        getDeviceData().then();
         getOSData().then();
 
-
-    },[startDate,endDate])
+    },[startDate, endDate, allowed])
 
     return (
         <>

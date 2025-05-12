@@ -33,16 +33,19 @@ export default function SignUp() {
         e.preventDefault()
         // Submit Logic
         if (!errors.email && !errors.password) {
-            console.log("Fetching")
             fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ email: email, password: password }),
+                credentials: 'include',
             })
                 .then((res) => res.json())
-                .then((res) => console.log(res));
+                .then((res) => {
+                    console.log(res)
+                    localStorage.setItem("accessToken", res.token)
+                });
         }
 
     }
