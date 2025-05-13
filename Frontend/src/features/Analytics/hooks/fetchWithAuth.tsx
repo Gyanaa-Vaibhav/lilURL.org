@@ -31,8 +31,8 @@ export async function initialFetch() {
 
         const refreshData = await refresh.json();
         if(refreshData.success === false){
-            // window.location.href = '/sign-in'
-            console.log("failed")
+            console.log("failed redirecting to sign-in")
+            window.location.href = '/sign-in'
         }
 
         const newAccessToken = refreshData?.token
