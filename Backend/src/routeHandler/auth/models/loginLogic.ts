@@ -20,5 +20,5 @@ export async function loginLogic(req: Request, res: Response) {
     const refreshToken = jwtService.signRefreshToken({userId,username,email})
     // TODO set secure to true while in development
     res.cookie("refreshToken", refreshToken, {httpOnly:true,secure:false});
-    res.json({success: true, accessToken})
+    res.json({success: true, accessToken,username,userId})
 }

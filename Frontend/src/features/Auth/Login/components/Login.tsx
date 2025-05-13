@@ -10,7 +10,8 @@ const Login = () => {
     const [password,setPassword] = React.useState<string>('')
     const [showPasswordButton,setShowPasswordButton] = React.useState<boolean>(false)
     const [errors,setErrors] = React.useState<{email?:string,password?:string}>({})
-    const [showingPassword,setShowingPassword] = React.useState<boolean>(true)
+    const [showingPassword, setShowingPassword] = React.useState<boolean>(true)
+    const [errorDialog, setErrorDialog] = React.useState('');
 
     React.useEffect(()=>{
         if(password.length > 0) {
@@ -37,10 +38,16 @@ const Login = () => {
             body:JSON.stringify({email:email,password:password}),
         }))
             .then((res)=>res.json())
-            .then((res)=>{
-                localStorage.setItem('accessToken', res.accessToken)
+            .then((res) => {
                 console.log(res)
-                if(res.success){
+                if (!res.success) {
+                    setErrorDialog(res.message)
+                    return
+                }
+                if (res.success) {
+                    setErrorDialog('')
+                    localStorage.setItem('accessToken', res.accessToken)
+                    localStorage.setItem('username', res.username)
                     window.location.href = '/dashboard'
                 }
             })
@@ -58,6 +65,11 @@ const Login = () => {
                         <p className="">Don't have an account? <a href="/sign-up" className="">Sign Up</a></p>
                     </div>
 
+                    {errorDialog &&
+                        <div className='errorDialog'>
+                            {errorDialog}
+                        </div>
+                    }
                     <div className='loginOptions'>
                         <div className="manualLogin">
                             <div style={{position:"relative"}}>

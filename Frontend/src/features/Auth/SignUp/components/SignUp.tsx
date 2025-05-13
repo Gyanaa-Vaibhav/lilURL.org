@@ -20,6 +20,7 @@ export default function SignUp() {
         oneNumber: false,
         oneSpecial: false
     });
+    const [errorDialog, setErrorDialog] = React.useState('');
 
     React.useEffect(()=>{
         if(password.length > 0) {
@@ -44,6 +45,10 @@ export default function SignUp() {
                 .then((res) => res.json())
                 .then((res) => {
                     console.log(res)
+                    if (!res.success) {
+                    setErrorDialog(res.message)
+                    return
+                }
                     localStorage.setItem("accessToken", res.token)
                 });
         }
@@ -62,6 +67,13 @@ export default function SignUp() {
                         <p className="">Already have an account? <a href="/sign-in" className="">Log in</a></p>
                     </div>
 
+                    {errorDialog &&
+                        <>
+                            <div className='errorDialog'>
+                                {errorDialog}
+                            </div>
+                        </>
+                    }
                     <div className='loginOptions'>
                         <div className="manualLogin">
                             <div style={{position:"relative"}}>

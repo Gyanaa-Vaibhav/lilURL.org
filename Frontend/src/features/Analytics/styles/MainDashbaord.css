@@ -23,7 +23,7 @@
 #analyticsHolder > :nth-child(4) { grid-column: 1/3; grid-row: 2; } /* GeoData */
 
 .dashboard {
-    width: 100vw;
+    max-width: 100vw;
     background-color: #f1f1f1;
     display: flex;
     flex-direction: row;
@@ -43,4 +43,51 @@
 
 .calender {
     max-width: fit-content;
+}
+
+.overAll-stats{
+    display: flex;
+    gap: 1rem;
+}
+
+.overAll-stats a {
+    text-decoration: none;
+}
+
+.overAll-stats a:hover {
+    transform: scale(1.05);
+    transition: 150ms;
+}
+
+.statsContainer{
+    display: flex;
+    align-items: center;
+    font-family: Manrope-Bold, sans-serif;
+    gap: 10px;
+    padding: 6px 12px;
+    color: var(--Secondary-Color);
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px;
+    margin-bottom: 1rem;
+}
+
+.statsContainer svg{
+    fill: var(--Secondary-Color);
+    stroke-width: 2px;
+}
+
+.statsHolder{
+    display: flex;
+    flex-direction: column;
+}
+
+.statsCount{
+    font-size: 2.4em;
+    margin: 0;
+}
+
+.statsTitle{
+    font-family: Manrope-Medium, sans-serif;
+    font-size: 1.6em;
 }

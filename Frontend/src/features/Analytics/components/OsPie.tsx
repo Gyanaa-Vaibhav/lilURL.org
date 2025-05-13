@@ -10,15 +10,14 @@ type Props = {
 export function OsPie({ data }: Props) {
     const svgRef = React.useRef<SVGSVGElement | null>(null);
     const [containerRef, dimensions] = useResizeObserver<HTMLDivElement>();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const osColors: Record<string, string> = {
+    const osColors = React.useMemo<Record<string, string>>(() => ({
         android: "#3DDC84",
         ios: "#FF3B30",
         macos: "#A389D4",
         windows: "#00A4EF",
         linux: "#FFA500",
         others: "#B0B0B0",
-    };
+    }), []);
 
     React.useEffect(() => {
         if (!svgRef.current || dimensions.width === 0 || dimensions.height === 0) return;
@@ -34,7 +33,7 @@ export function OsPie({ data }: Props) {
             .padAngle(0.015); // smooth spacing
 
         const arc = d3.arc<d3.PieArcDatum<{ os: string; count: string }>>()
-            .innerRadius(radius * 0.35)
+            .innerRadius(radius * 0.45)
             .outerRadius(radius - 10);
 
         const g = svg.append("g")

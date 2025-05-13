@@ -80,10 +80,11 @@ export function GeoData({data}: Props) {
             id='geo-world'
             ref={containerRef}
             style={{
-                // minHeight:"200px",
+                width: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                boxShadow: "rgba(0, 0, 0, 0.05) 0px 2px 8px",
             }}
         >
             <svg

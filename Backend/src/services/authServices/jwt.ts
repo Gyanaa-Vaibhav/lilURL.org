@@ -1,9 +1,17 @@
+/**
+ * @file jwt.ts
+ * @description JWT service class for signing, verifying, decoding, and refreshing tokens in an Express.js application.
+ */
 import jwt, {JwtPayload} from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import {NextFunction,Response,Request} from "express";
 import {logError, logWarn} from "../servicesExport.js"
 dotenv.config();
 
+/**
+ * Handles JWT operations including signing, verification, decoding, and token refreshing.
+ * Utilizes environment variables for access and refresh token secrets.
+ */
 class JWTValidator{
     private accessToken = process.env.ACCESS_TOKEN
     private refreshToken = process.env.REFRESH_TOKEN
@@ -14,15 +22,31 @@ class JWTValidator{
         }
     }
 
+    /**
+     * Signs a new access token using the access token secret.
+     * @param {any} payload - Data to encode in the token.
+     * @param {string} [expiry] - Optional custom expiration time.
+     * @returns {string} - Signed JWT access token.
+     */
     public signAccessToken(payload:any, expiry?:any){
         if(expiry) return jwt.sign(payload,this.accessToken!, {expiresIn: expiry})
         return jwt.sign(payload,this.accessToken!, {expiresIn:'6hr'})
     }
 
+    /**
+     * Signs a new refresh token using the refresh token secret.
+     * @param {any} payload - Data to encode in the token.
+     * @returns {string} - Signed JWT refresh token.
+     */
     public signRefreshToken(payload:any){
         return jwt.sign(payload,this.refreshToken!, {expiresIn:'7d'})
     }
 
+    /**
+     * Verifies and decodes an access token.
+     * @param {string} token - The JWT access token.
+     * @returns {JwtPayload|string|undefined} - Decoded payload or undefined if invalid.
+     */
     public decodeAccessToken(token:string):JwtPayload | string | undefined {
         const verified = jwt.verify(token, this.accessToken!);
         const decode = jwt.decode(token);
@@ -30,6 +54,11 @@ class JWTValidator{
         return verified;
     }
 
+    /**
+     * Verifies and decodes a refresh token.
+     * @param {string} token - The JWT refresh token.
+     * @returns {JwtPayload|string|undefined} - Decoded payload or undefined if invalid.
+     */
     public decodeRefreshToken(token:any):JwtPayload | string | undefined {
         const verified = jwt.verify(token, this.refreshToken!);
         const decode = jwt.decode(token);
@@ -37,6 +66,13 @@ class JWTValidator{
         return verified;
     }
 
+    /**
+     * Express middleware to verify the access token from the Authorization header.
+     * Sets the decoded user data to req.user if valid.
+     * @param {Request} req - Express request object.
+     * @param {Response} res - Express response object.
+     * @param {NextFunction} next - Express next middleware function.
+     */
     public verifyToken(req:Request, res:Response, next:NextFunction) {
         const authHeader = req.headers['authorization'];
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -74,6 +110,13 @@ class JWTValidator{
         }
     }
 
+    /**
+     * Handles refresh token logic. Generates a new access token if refresh token is valid.
+     * Sends the new token in the response.
+     * @param {Request} req - Express request object with cookies.
+     * @param {Response} res - Express response object.
+     * @param {NextFunction} next - Express next middleware function.
+     */
     public refreshIncomingToken(req:Request, res:Response, next:NextFunction) {
         try {
             const accessKey = this.accessToken;

@@ -257,3 +257,11 @@
     margin-right: 0.125rem;
 }
 
+.errorDialog{
+    font-size: 1.4em;
+    color: #000000;
+    font-family: Manrope-Bold, sans-serif;
+    background-color: #ff000060;
+    border: 2.5px dashed #ff0000;
+    padding: 6px 12px;
+}

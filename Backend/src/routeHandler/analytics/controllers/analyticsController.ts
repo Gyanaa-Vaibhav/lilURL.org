@@ -13,6 +13,8 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
 
     let qrClicks = 0;
     let linkClicks = 0;
+    const linkCountMap = {};
+    let linkCount = 0;
     const grouped: {
         device: Record<string, number>;
         os: Record<string, number>;
@@ -30,6 +32,12 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
             qrClicks++;
         } else {
             linkClicks++;
+        }
+        if (!linkCountMap[row.linkid]) {
+            linkCountMap[row.linkid] = 1;
+            linkCount++;
+        } else {
+            linkCountMap[row.linkid]++;
         }
         // Device
         const device = row.isbot ? "Bot" :
@@ -64,6 +72,7 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
             linkClicks
         },
         impression: rows.length,
+        linkCount,
     };
 
     res.json(formatted)

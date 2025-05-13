@@ -1,8 +1,22 @@
+/**
+ * @file getAnalyticsByLink.ts
+ * @description Provides analytics breakdown for a specific link by device type, OS, geographic location, click count, or click hour over a time range.
+ */
 import {GetInterface} from './getExports.js'
 import {Database} from '../databaseExports.js'
 import {QueryResult} from "pg";
 import {logError} from "../../logger/loggerExport.js";
 
+/**
+ * @typedef {Object} QueryInput
+ * @property {number} [os] - Filter by operating system.
+ * @property {number} [device] - Filter by device type.
+ * @property {number} [geo] - Filter by geographic location.
+ * @property {number} [clicks] - Request click count aggregation.
+ * @property {number} [clicksHour] - Request hourly click distribution.
+ * @property {string} start - Start date (ISO format).
+ * @property {string} end - End date (ISO format).
+ */
 type QueryInput = {
     os?:number,
     device?:number,
@@ -12,9 +26,20 @@ type QueryInput = {
     start:string,
     end:string
 };
+
+/**
+ * Retrieves various analytics breakdowns for a given short URL (link ID),
+ * such as device type, OS, geo, click totals, or hourly distribution.
+ */
 class GetAnalyticsByLink implements GetInterface {
     private db = Database.getInstance();
 
+    /**
+     * Routes the input to the appropriate analytics method based on provided query keys.
+     * @param {QueryInput} input - Query parameters.
+     * @returns {Promise<QueryResult>} - Result of the selected analytics query.
+     * @throws {Error} If no valid analytics type is specified.
+     */
     public async query(input:QueryInput): Promise<QueryResult> {
         if(input.device) return this.byDeviceType(input.device,input.start,input.end);
         if(input.os) return this.byOS(input.os,input.start,input.end);
@@ -25,6 +50,13 @@ class GetAnalyticsByLink implements GetInterface {
         throw new Error("Invalid Query for GetAnalyticsByLink");
     }
 
+    /**
+     * Returns device type distribution (Mobile, Desktop, etc.) for a link.
+     * @param {number} id - Link ID.
+     * @param {string} start - Start date.
+     * @param {string} end - End date.
+     * @returns {Promise<QueryResult>} - Device type breakdown.
+     */
     private async byDeviceType(id:number,start:string,end:string){
         const value = [id,start,end]
         const query = `
@@ -47,6 +79,13 @@ class GetAnalyticsByLink implements GetInterface {
         return this.db.query(query, value);
     }
 
+    /**
+     * Returns geographic location breakdown for a link.
+     * @param {number} id - Link ID.
+     * @param {string} start - Start date.
+     * @param {string} end - End date.
+     * @returns {Promise<QueryResult>} - Location-wise analytics.
+     */
     private async byGeo(id:number,start:string,end:string){
         const value = [id,start,end]
         const query = `
@@ -58,6 +97,13 @@ class GetAnalyticsByLink implements GetInterface {
         return this.db.query(query, value);
     }
 
+    /**
+     * Returns click count per day over a time range.
+     * @param {number} id - Link ID.
+     * @param {string} start - Start date.
+     * @param {string} end - End date.
+     * @returns {Promise<QueryResult>} - Clicks per day.
+     */
     private async byClick(id:number,start:string,end:string){
         const value = [id,start,end];
         const query = `
@@ -70,6 +116,13 @@ class GetAnalyticsByLink implements GetInterface {
         return this.db.query(query, value);
     }
 
+    /**
+     * Returns operating system distribution for a link.
+     * @param {number} id - Link ID.
+     * @param {string} start - Start date.
+     * @param {string} end - End date.
+     * @returns {Promise<QueryResult>} - OS type breakdown.
+     */
     private async byOS(id:number,start:string,end:string){
         const value = [id,start,end];
         const query = `
@@ -90,6 +143,13 @@ class GetAnalyticsByLink implements GetInterface {
         return this.db.query(query, value);
     }
 
+    /**
+     * Returns click distribution grouped by each hour within the time range.
+     * @param {number} id - Link ID.
+     * @param {string} start - Start date.
+     * @param {string} end - End date.
+     * @returns {Promise<QueryResult>} - Hourly click breakdown.
+     */
     private async byClickHour(id:number,start:string,end:string){
         const value = [id,start,end];
         const query = `

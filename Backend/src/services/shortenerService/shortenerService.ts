@@ -1,6 +1,11 @@
 import {base62Decoder,base62Encoder} from './utils/utilsExport.js'
 import {getLinkService,addLinkService,getExpiredLinksService} from "../databaseService/databaseExports.js";
 
+/**
+ * @file shortenerService.ts
+ * @description Service class for creating and resolving short URLs. Supports link reusability and future integration with expired link recycling.
+ */
+
 type commonType = {
     success:boolean,
     message:"Success" | "Not Found" | "Expired",
@@ -15,16 +20,30 @@ type CreateLinkType = {
     shortURL?:string
 } & commonType
 
+/**
+ * Handles creation of short URLs and retrieval of their corresponding long URLs.
+ * Supports checking for existing links and basic expiration validation.
+ */
 export class ShortenerService{
     private index;
     private getLinkService = getLinkService
     private addLinkService = addLinkService
     private getExpiredLinksService = getExpiredLinksService
 
+    /**
+     * Constructs the ShortenerService and optionally accepts a starting index.
+     * @param {number} [index] - Optional starting index for generating new short URLs.
+     */
     constructor(index?:number) {
         this.index = index
     }
 
+    /**
+     * Creates a short URL for the given long link. Reuses existing short link if already present.
+     * Optionally handles expired links in future enhancement.
+     * @param {string} LongLink - The original long URL to shorten.
+     * @returns {Promise<CreateLinkType>} - Object indicating success and containing the short URL.
+     */
     public async createLink(LongLink:string):Promise<CreateLinkType> {
         if(!this.index) await this.updateIndex()
 
@@ -48,6 +67,11 @@ export class ShortenerService{
         return {success:true,message:'Success',shortURL}
     }
 
+    /**
+     * Resolves the short link to its original long URL, checking for expiration.
+     * @param {string} shortLink - The short URL identifier.
+     * @returns {Promise<ReturnURL>} - Object with resolution status, original URL, and link ID.
+     */
     public async getLongURL(shortLink:string):Promise<ReturnURL>{
         const {rows} = await this.getLinkService.query({shortLink})
         const longURL = rows[0]?.longurl
@@ -66,6 +90,11 @@ export class ShortenerService{
         return {success:false,message:"Not Found",linkID}
     }
 
+    /**
+     * Updates the internal index from the latest entry in the database.
+     * This ensures unique short link generation for new entries.
+     * @private
+     */
     private async updateIndex():Promise<void> {
         console.warn("Index not found or initiated fetching from DB")
         const {rows} = await this.getLinkService.lastIndex()

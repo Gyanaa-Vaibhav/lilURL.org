@@ -10,14 +10,14 @@ type Props = {
 export function DevicePie({ data }: Props) {
     const svgRef = React.useRef<SVGSVGElement | null>(null);
     const [containerRef, dimensions] = useResizeObserver<HTMLDivElement>();
-    const deviceColors: Record<string, string> = {
+    const deviceColors = React.useMemo<Record<string, string>>(() => ({
         mobile: "#3DDC84",
         tablet: "#FFB347",
         desktop: "#4A90E2",
         tv: "#9B59B6",
         bot: "#E74C3C",
         others: "#BDC3C7"
-    };
+    }), []);
 
     React.useEffect(() => {
         if (!svgRef.current || dimensions.width === 0 || dimensions.height === 0) return;
