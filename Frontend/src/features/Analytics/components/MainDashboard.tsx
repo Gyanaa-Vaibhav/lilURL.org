@@ -42,7 +42,6 @@ export function MainDashboard() {
         async function getData(){
             const result = await fetchWithAuth(`${url}/?start=${startDate}&end=${endDate}`);
             const data = await result.json()
-            console.log("Data", data)
             if(data.linkCount) setLinkCount(data.linkCount)
             if(data.qrStats.qrClicks) setQrClicks(data.qrStats.qrClicks)
             if(data.qrStats.linkClicks) setLinkClicks(data.qrStats.linkClicks)

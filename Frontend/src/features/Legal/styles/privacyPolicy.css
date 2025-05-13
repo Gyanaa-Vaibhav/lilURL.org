@@ -1,0 +1,63 @@
+/* Styles for legal */
+.legalHolder{
+    background-color: var(--Primary-Color);
+}
+.legal-page {
+    max-width: 100ch;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--Primary-Color);
+    color: var(--Body-Color);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    border-radius: 8px;
+    /* box-shadow: 0 2px 8px rgba(0,0,0,0.08); */
+}
+
+.legal-page h1 {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+    color: var(--Secondary-Color);
+    border-bottom: 2px solid var(--Accent-Color-2);
+    padding-bottom: 0.5rem;
+}
+
+.legal-page h2 {
+    font-size: 1.6rem;
+    color: var(--Secondary-Color);
+    margin-top: 2.4rem;
+    margin-bottom: 1rem;
+}
+
+.legal-page h3 {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--Accent-Color);
+}
+
+.legal-page p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.legal-page ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.legal-page li {
+    font-size: 1.4em;
+    margin-bottom: 0.5rem;
+}
+
+.legal-page a {
+    color: var(--Accent-Color);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.legal-page strong {
+    color: var(--Body-Color);
+    font-weight: 600;
+}
