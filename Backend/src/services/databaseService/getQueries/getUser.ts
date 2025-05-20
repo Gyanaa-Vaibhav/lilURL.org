@@ -12,8 +12,9 @@ import {QueryResult} from "pg";
  * @property {string} [email] - The user's email address.
  * @property {string} [oAuth] - The user's OAuth ID.
  * @property {number} [userID] - The internal user ID.
+ * @property {number as userID} [qr] - The internal user ID to get qrOptions.
  */
-type QueryInput = { email?: string; oAuth?: string; userID?: number };
+type QueryInput = { email?: string; oAuth?: string; userID?: number ; qr?: number};
 
 /**
  * @typedef {Object} UserData
@@ -52,6 +53,7 @@ class GetUser implements GetInterface{
         if(input.email) return this.byEmail(input.email);
         if(input.oAuth) return this.byOAuthId(input.oAuth)
         if(input.userID) return this.byId(input.userID)
+        if(input.qr) return this.getQr(input.qr)
         logError("Invalid query input for GetUser")
         throw new Error("Invalid query input for GetLink");
     }
@@ -84,6 +86,12 @@ class GetUser implements GetInterface{
      * @returns {Promise<QueryResult<UserData>>} - User data matching the user ID.
      */
     private async byId(userID:number):Promise<QueryResult<UserData>> {
+        const value = [userID]
+        const query = "SELECT * FROM users WHERE userID = ($1)"
+        return await this.db.query(query,value)
+    }
+
+    private async getQr(userID:number):Promise<QueryResult<UserData>> {
         const value = [userID]
         const query = "SELECT * FROM users WHERE userID = ($1)"
         return await this.db.query(query,value)

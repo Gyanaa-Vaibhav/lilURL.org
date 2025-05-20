@@ -2,6 +2,11 @@ import React from 'react';
 import '../styles/privacyPolicy.css'; // Optional: style it if you like
 
 export default function PrivacyPolicy() {
+
+    React.useEffect(()=>{
+        document.title = "Privacy Policy | lilURL"
+    })
+
     return (
         <div className='legalHolder'>
         <div className="legal-page">

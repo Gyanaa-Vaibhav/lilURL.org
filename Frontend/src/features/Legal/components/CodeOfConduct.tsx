@@ -3,8 +3,14 @@ import React from 'react';
 import '../styles/privacyPolicy.css'; // Reuses the same styling for consistency
 
 export default function CodeOfConduct() {
+
+    React.useEffect(()=>{
+        document.title = "Code of Conduct | lilURL"
+    })
+
     return (
-        
+
+
         <div className='legalHolder'>
             {/* TODO NEED TO CHANGE EMAIL AND WEBSITE to .org */}
             <div className="legal-page">

@@ -3,6 +3,11 @@ import React from 'react';
 import '../styles/privacyPolicy.css'; // Use the same styling for consistency
 
 export default function TermsOfService() {
+
+    React.useEffect(()=>{
+        document.title = "Terms of Service | lilURL"
+    })
+
     return (
         <div className='legalHolder'>
             <div className="legal-page">

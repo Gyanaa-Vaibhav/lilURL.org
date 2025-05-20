@@ -2,7 +2,7 @@ import {UpdateInterface} from "./updateInterface";
 import {QueryResult} from "pg";
 import {Database} from '../databaseExports.js'
 
-type UpdateProperties = 'userID' | 'username' | 'email' | 'password' | 'oauth_id' | 'oauth_provider'
+type UpdateProperties = 'userID' | 'username' | 'email' | 'password' | 'oauth_id' | 'oauth_provider' | 'qr_options'
 
 type Set = {
     where: UpdateProperties,

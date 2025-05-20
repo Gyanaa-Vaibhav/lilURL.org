@@ -24,6 +24,9 @@ export function MainDashboard() {
     const { afterToday } = DateRangePicker;
 
     useEffect(() => {
+
+        document.title = "DashBoard | lilURL"
+
         async function boot() {
             const authSuccess = await initialFetch();
             if (authSuccess) {
@@ -33,6 +36,7 @@ export function MainDashboard() {
             }
         }
         boot().then();
+
     }, []);
 
 

@@ -5,6 +5,12 @@ import React from "react";
 export function SideNav(){
     const [collapsed, setCollapsed] = React.useState(false);
 
+    React.useEffect(()=>{
+        if(window.innerWidth <= 650){
+            setCollapsed(true);
+        }
+    },[])
+
     return (
         <>
                 <div className="sideNav-container">

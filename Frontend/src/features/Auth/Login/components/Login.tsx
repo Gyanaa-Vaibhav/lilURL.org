@@ -14,6 +14,10 @@ const Login = () => {
     const [errorDialog, setErrorDialog] = React.useState('');
 
     React.useEffect(()=>{
+        document.title = "Sign In | lilURL"
+    })
+
+    React.useEffect(()=>{
         if(password.length > 0) {
             setShowPasswordButton(true)
         }else {

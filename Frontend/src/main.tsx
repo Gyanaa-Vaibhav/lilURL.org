@@ -11,6 +11,7 @@ import { UpdateQR } from './features/UpdateQR/components/UpdateQR.tsx';
 import PrivacyPolicy from './features/Legal/components/PrivacyPolicy.tsx';
 import CodeOfConduct from './features/Legal/components/CodeOfConduct.tsx';
 import TermsOfService from './features/Legal/components/TermsOfService.tsx';
+import {Profile} from "./features/Profile/components/Profile.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path='/privacy-policy' element={<PrivacyPolicy />}/>
                 <Route path='/code-of-conduct' element={<CodeOfConduct />}/>
                 <Route path='/terms-of-service' element={<TermsOfService />}/>
+                <Route path='/profile' element={<Profile />}/>
               {/*<Route path='/chat' element={<MainChat/>}/>*/}
           </Routes>
       </BrowserRouter>

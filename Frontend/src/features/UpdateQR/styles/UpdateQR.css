@@ -84,7 +84,7 @@ label {
     padding: 2rem 2.5rem;
 }
 
-.uploadSettings {
+.uploadSettings, .remove-image {
     display: flex;
     padding: 6px 12px;
     border-radius: 10px;
@@ -95,11 +95,12 @@ label {
     margin-bottom: 1em;
 }
 
-.uploadSettings:hover {
+.uploadSettings:hover, .remove-image:hover {
     scale: 1.05;
     transition: all 150ms;
 }
-.uploadSettings:active {
+
+.uploadSettings:active, .remove-image:active {
     scale: 1;
     transition: all 150ms;
 }

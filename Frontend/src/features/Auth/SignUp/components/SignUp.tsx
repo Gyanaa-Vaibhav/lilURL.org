@@ -30,6 +30,10 @@ export default function SignUp() {
         }
     },[password])
 
+    React.useEffect(()=>{
+        document.title = "Sign Up | lilURL"
+    })
+
     function handelSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault()
         // Submit Logic
@@ -50,6 +54,7 @@ export default function SignUp() {
                     return
                 }
                     localStorage.setItem("accessToken", res.token)
+                    window.location.href = '/dashboard';
                 });
         }
 
