@@ -4,7 +4,7 @@ import * as path from "node:path";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'
-import {jwtService} from './services/servicesExport.js';
+import {jwtService, shortenerService} from './services/servicesExport.js';
 import {
     analyticsRouter,
     authRouter,
@@ -35,6 +35,11 @@ app.get('/refreshToken',jwtService.refreshIncomingToken.bind(jwtService))
 
 app.get("/:shortURL",redirectRouter)
 app.use("/auth",authRouter)
+app.post("/free/link",async (req, res) => {
+    console.log(req.body)
+    // await shortenerService.createLink({})
+    res.json({success: true})
+})
 
 app.use( jwtService.verifyToken.bind(jwtService) )
 

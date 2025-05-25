@@ -1,4 +1,67 @@
 /* Styles for Profile */
 .profile{
     max-width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+.profile-container{
+    padding: 40px 20px 0;
+    font-family: Manrope-Medium, sans-serif;
+}
+
+.userName{
+
+}
+
+.userEmail, .userCreatedAt {
+    font-size: 1.125rem;
+    font-weight: normal;
+    line-height: 1.6;
+}
+
+.linkList{
+    max-height: 400px;
+    overflow-y:auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Manrope-Medium', sans-serif;
+    background-color: #ffffff;
+    color: var(--Body-Color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1.2rem;
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: var(--Secondary-Color);
+    color: #ffffff;
+    font-family: 'Manrope-Bold', sans-serif;
+}
+
+th, td {
+    font-size: 1.125rem;
+    padding: 6px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: var(--Accent-Color-2);
+    color: var(--Accent-Color);
+    cursor: pointer;
+}
+
+th {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }

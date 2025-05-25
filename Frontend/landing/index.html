@@ -99,7 +99,7 @@
                 <div class="holder">
                     <h3>Shorten a long link</h3>
                     <label for="long_link">
-                        <input placeholder="https://example.com/very/long/path" id="long_link">
+                        <input autocomplete="off" class="linkInput" placeholder="https://example.com/very/long/path" id="long_link">
                     </label>
                     <button class="getLink">
                         Get you Link for free
@@ -109,7 +109,8 @@
                     </button>
                     <small>*  Sign up to unlock click tracking, referrer insights, and device data.</small>
                 </div>
-                <img alt="image" src="./public/images/link.png" />
+                <div class="loader"></div>
+                <img class="image" alt="image" src="./public/images/link.png" />
             </div>
         </div>
     </main>
@@ -117,6 +118,7 @@
     <section class="final-cta">
         <p class="title">Start Shortening. Start Tracking. Start Smarter.</p>
         <p>Turn long, messy URLs into clean, branded links. Generate custom QR codes, unlock real-time click analytics, and manage everything in one fast, free platform — built for creators, teams, and developers.</p>
+        <img class="analyticsImage" src="./public/images/analytics.png" alt="analytics image" />
         <button class="getStarted">Get Started - It's Free</button>
     </section>
 
@@ -130,17 +132,6 @@
             <li><a href="">Sign Up Free</a></li>
         </ul>
     </footer>
-
-    <svg class="wave" width="1600" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_5_181)">
-            <path d="M0 535L20.0444 533.8C40.0889 532.7 80.1778 530.3 120.267 530C160.356 529.7 200.444 531.3 240.533 532.7C280.622 534 320.711 535 360.8 522.8C400.889 510.7 440.978 485.3 481.067 473.8C521.156 462.3 561.244 464.7 601.333 477.5C641.422 490.3 681.511 513.7 721.6 525.5C761.689 537.3 801.778 537.7 841.867 533.2C881.956 528.7 922.044 519.3 962.133 500.3C1002.22 481.3 1042.31 452.7 1082.4 440.2C1122.49 427.7 1162.58 431.3 1202.67 446.5C1242.76 461.7 1282.84 488.3 1322.93 500C1363.02 511.7 1403.11 508.3 1443.2 498.5C1483.29 488.7 1523.38 472.3 1563.47 473.8C1603.56 475.3 1643.64 494.7 1683.73 496.7C1723.82 498.7 1763.91 483.3 1783.96 475.7L1804 468" stroke="#DDA853" stroke-width="35" stroke-linecap="round"/>
-        </g>
-        <defs>
-            <clipPath id="clip0_5_181">
-                <rect width="1600" height="600" fill="white"/>
-            </clipPath>
-        </defs>
-    </svg>
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -155,5 +146,49 @@
             closeIcon.style.display = isOpen ? 'inline' : 'none';
         });
     });
+
+    const getLinkButton = document.querySelector('.getLink');
+    const holder = document.querySelector('.holder');
+    const image = document.querySelector('.image');
+    const loader = document.querySelector('.loader');
+    const linkInput  = document.querySelector('.linkInput');
+    getLinkButton.addEventListener('click', () => {
+        const input = linkInput.value
+        console.log("Clicked on getLink",input);
+        if (isValidUrl(input)) {
+            console.log("Valid URL");
+        } else {
+            console.log("Invalid URL");
+        }
+        // holder.style.display = 'none';
+        // image.style.display = 'none';
+        // loader.style.display = 'block';
+        // setTimeout(()=>{
+        //     holder.style.display = 'flex';
+        //     loader.style.display = 'none';
+        // },1000)
+
+        fetch('http://69.62.76.167:5173/free/link', {
+            method: 'POST',
+            body:{
+                link:input,
+            }
+        }).then(res => res.json())
+    })
+
+    function isValidUrl(input) {
+        if (typeof input !== 'string') return false;
+
+        // Reject if it contains spaces or disallowed characters
+        const disallowedPattern = /[\s()<>{}"'`\\]/;
+        if (disallowedPattern.test(input)) return false;
+
+        try {
+            const url = new URL(input.startsWith('http') ? input : `https://${input}`);
+            return /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(url.href);
+        } catch {
+            return false;
+        }
+    }
 </script>
 </html>

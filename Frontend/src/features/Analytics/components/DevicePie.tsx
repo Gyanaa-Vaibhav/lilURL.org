@@ -46,6 +46,8 @@ export function DevicePie({ data }: Props) {
 
         arcs.append("path")
             .attr("d", arc)
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             .attr("fill", d => {
                 const base = deviceColors[d.data.devicetype.toLowerCase()] || "#CCCCCC";
                 return d3.color(base)?.darker(0.3).toString(); // richer tone
@@ -118,7 +120,7 @@ export function DevicePie({ data }: Props) {
                 background: "#fff",
                 borderRadius: "8px",
                 padding: "1rem",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                boxShadow: "rgba(0, 0, 0, 0.05) 5px 2px 8px 5px",
             }}
         >
             <div className="chart-legend" style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>

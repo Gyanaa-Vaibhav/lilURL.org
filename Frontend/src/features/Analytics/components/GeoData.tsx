@@ -84,7 +84,7 @@ export function GeoData({data}: Props) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "rgba(0, 0, 0, 0.05) 0px 2px 8px",
+                boxShadow: "rgba(0, 0, 0, 0.05) 5px 2px 8px 5px",
             }}
         >
             <svg

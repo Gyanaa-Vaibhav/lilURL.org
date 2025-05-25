@@ -8,7 +8,7 @@ import {getLinkService,addLinkService,getExpiredLinksService} from "../databaseS
 
 type commonType = {
     success:boolean,
-    message:"Success" | "Not Found" | "Expired",
+    message:"Success" | "Not Found" | "Expired" | "Exists",
 }
 
 type ReturnURL = {
@@ -53,7 +53,7 @@ export class ShortenerService{
 
         if(linkExists.rows) {
             console.warn("Short link already exists returning the old one:",linkExists.rows[0].shorturl)
-            return {success:true,message:"Success",shortURL:linkExists.rows[0].shorturl};
+            return {success:true,message:"Exists",shortURL:linkExists.rows[0].shorturl};
         }
 
         if(expiredLinks?.id){
@@ -104,5 +104,5 @@ export class ShortenerService{
 
 export const shortenerService = new ShortenerService()
 // const shortUrl = await shortenerService.createLink("www.google.com")
-const Link = await shortenerService.getLongURL("j")
-console.log(Link?.longURL)
+// const Link = await shortenerService.getLongURL("j")
+// console.log(Link?.longURL)

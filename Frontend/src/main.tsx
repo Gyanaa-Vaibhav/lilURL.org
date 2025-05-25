@@ -13,6 +13,7 @@ import CodeOfConduct from './features/Legal/components/CodeOfConduct.tsx';
 import TermsOfService from './features/Legal/components/TermsOfService.tsx';
 import {Profile} from "./features/Profile/components/Profile.tsx";
 
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <BrowserRouter>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path='/analytics' element={<Analytics/>}/>
               <Route path='/dashboard' element={<MainDashboard/>}/>
               <Route path='/updateQR' element={<UpdateQR />}/>
+              {/*<Route path='/create-link' element={<CreateLink />}/>*/}
               <Route path='/privacy-policy' element={<PrivacyPolicy />}/>
                 <Route path='/code-of-conduct' element={<CodeOfConduct />}/>
                 <Route path='/terms-of-service' element={<TermsOfService />}/>

@@ -3,7 +3,7 @@ import {Database} from '../databaseExports.js'
 import {QueryResult} from "pg";
 import {logError} from "../../logger/loggerExport.js";
 
-type QueryInput = { shortLink?: string; longURL?: string; id?: number };
+type QueryInput = { shortLink?: string; longURL?: string; id?: number; userId?:number };
 class GetLink implements GetInterface{
     private db = Database.getInstance()
     /**
@@ -21,6 +21,7 @@ class GetLink implements GetInterface{
      * await getLink.query({ id: 42 });
      */
     public async query(input:QueryInput):Promise<QueryResult> {
+        if (input.userId) return this.getAll(input.userId);
         if (input.shortLink) return this.byShortURL(input.shortLink);
         if (input.longURL) return this.byLongURL(input.longURL);
         if (input.id) return this.byID(input.id);
@@ -85,6 +86,12 @@ class GetLink implements GetInterface{
     public async lastIndex(): Promise<QueryResult>{
         const query = "SELECT * FROM links ORDER BY linkID DESC LIMIT 1;"
         return await this.db.query(query)
+    }
+
+    public async getAll(userId:number): Promise<QueryResult> {
+        const query = "SELECT * FROM links WHERE userID = ($1);"
+        const values = [userId]
+        return await this.db.query(query,values)
     }
 }
 
