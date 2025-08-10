@@ -40,6 +40,17 @@ class Database{
         }
         if (!Database.database && DBConnection) {
             Database.database = DBConnection;
+            if(DBConnection instanceof Pool)
+            DBConnection.query("SELECT NOW()")
+                .catch((err: unknown) => {
+                    if (err instanceof Error) {
+                        logError(`Database connection failed: ${err.message}`);
+                    } else {
+                        logError("Database connection failed with unknown error type.");
+                    }
+
+                    throw new Error("Database Connection Failed");
+                });
         }
     }
 }
