@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import dotenv from 'dotenv';
 import react from '@astrojs/react';
+import path from "path";
 
 dotenv.config();
 const defineVars = {};
@@ -16,7 +17,14 @@ export default defineConfig({
     port: Number(process.env.PORT || 5172)
   },
   vite: {
-    define: defineVars
+    define: defineVars,
+    resolve: {
+      alias: {
+        '@components': path.resolve('./src/components'),
+        '@layouts': path.resolve('./src/layouts'),
+        '@fonts': path.resolve('./public/fonts'),
+      },
+    },
   },
   outDir: "./build"
 });

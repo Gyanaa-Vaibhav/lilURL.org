@@ -1,9 +1,9 @@
 import request from 'supertest';
 import express from 'express';
-import getRoute from '../routes/getRouter';
+import {getRouter} from '../routes/getRouter';
 
 const app = express();
-app.use('/get', getRoute);
+app.use('/get', getRouter);
 
 describe('get Route', () => {
     it('should render the get page', async () => {
