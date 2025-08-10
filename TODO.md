@@ -8,7 +8,7 @@
 - [ ] Add Docker test compose files (Need to add test files first)
 - [X] Add PSQL Dockerised
 - [X] Add REDIS Dockerised
-- [ ] connect to the github runner on Server and test
+- [X] connect to the github runner on Server and test
 
 ### Medium Priority (*11-Aug*)
 - [X] Change FrontEnd to Astro
@@ -20,7 +20,7 @@
 ### Low Priority (*Anytime*)
 - [ ] Revamp the landing page
 - [ ] Revamp UI
-- [ ] Update ReadMe.mc
-- [ ] Get Open Source Liscense
-- [ ] Get MIT Liscense
+- [ ] Update ReadMe.md
+- [ ] Get Open Source License
+- [ ] Get MIT License
 - [ ] Setup a Setup.md

@@ -21,8 +21,9 @@ const __dirname = path.dirname(__filename)
 
 app.use(cors({
     origin:true,
-    // methods: ['GET', 'POST'],
-    // allowedHeaders: ['Content-Type'],
+    // origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
     credentials: true,
 }))
 app.use(express.json({ limit: '1.5mb' }))
