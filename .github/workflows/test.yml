@@ -1,0 +1,8 @@
+name: First YML Test
+on: workflow_dispatch
+jobs:
+    Echo:
+        runs-on: [self-hosted, CI]
+        steps:
+            - name: Echo Hello
+              run: echo "Hello World"

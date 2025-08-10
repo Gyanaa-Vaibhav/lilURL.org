@@ -1,16 +1,17 @@
 # TODO - lilURL
 ### High Priority (*10-Aug*)
-- [ ] Dockerise Frontend
-- [ ] Dockerise Backend
-- [ ] Connect Both
+- [X] Dockerise Frontend
+- [X] Dockerise Backend
+- [X] Connect Both
 - [ ] Add UI Files
-- [ ] Make Docker Compose Files
-- [ ] Add Docker test compose files
-- [ ] Add PSQL Dockerised
+- [X] Make Docker Compose Files
+- [ ] Add Docker test compose files (Need to add test files first)
+- [X] Add PSQL Dockerised
+- [X] Add REDIS Dockerised
 - [ ] connect to the github runner on Server and test
 
 ### Medium Priority (*11-Aug*)
-- [ ] Change FrontEnd to Astro
+- [X] Change FrontEnd to Astro
 - [ ] Improve Backend Code
 - [ ] Add dashboard Layout
 - [ ] Add Prom Queries

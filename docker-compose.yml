@@ -1,0 +1,57 @@
+name: lilURL-dev
+
+services:
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: frontend.Dockerfile
+    ports:
+      - $FRONTEND_PORT:$FRONTEND_PORT
+    volumes:
+      - ./Frontend:/app
+      - /app/node_modules
+    container_name: lilUrl_frontend
+    env_file:
+      - $FRONTEND_ENV
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: backend.Dockerfile
+    ports:
+      - $BACKEND_PORT:$BACKEND_PORT
+    volumes:
+      - ./Backend:/app
+      - /app/node_modules
+    container_name: lilUrl_backend
+    depends_on:
+      - lilURL_DB
+      - lilURL_redis
+
+  lilURL_redis:
+    image: redis:8.2-alpine
+    container_name: lilURL_redis
+    ports:
+      - $REDIS_PORT:6379
+    volumes:
+      - lilURL-redis-data:/data
+    restart: unless-stopped
+
+  lilURL_DB:
+    image: postgres:15-alpine
+    container_name: lilURL_DB
+    restart: unless-stopped
+    ports:
+      - $DB_PORT:5432
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    volumes:
+      - pgData-lilURL:/var/lib/postgresql/data
+
+volumes:
+  lilURL-redis-data:
+  pgData-lilURL:
