@@ -1,0 +1,84 @@
+.input-bar{
+    display: flex;
+    border-radius: 10px;
+}
+
+.input-bar div{
+    display: flex;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.input-bar label{
+    padding-left: 6px;
+    background-color: #FFFFFF;
+    border-top-left-radius: 6px;
+    min-width: fit-content;
+    border-bottom-left-radius: 6px;
+}
+
+.input-bar label svg{
+    height: 100%;
+}
+
+.input-bar input{
+    font-family: var(--Paragraph-Font), serif;
+    font-weight: 400;
+    font-size: 1rem;
+    flex: 1;
+    padding: 6px 12px;
+    background-color: #FFFFFF;
+    border: none;
+    outline: none;
+}
+
+.input-bar input:focus-visible{
+    background-color: #FFFFFF;
+    border: none;
+}
+
+.input-bar input::placeholder {
+    opacity: 0.8;
+    font-family: "Proxima Nova Regular", serif;
+}
+
+.input-bar button{
+    border: none;
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    color: var(--N-CTA-Color);
+    cursor: pointer;
+    background-color: var(--N-CTA-BG);
+    font-family: var(--CTA-Font), serif;
+}
+
+.input-bar button:hover{
+    scale: 1.05;
+    background-color: var(--N-CTA-BG-Hover);
+    transition: scale 100ms;
+}
+
+.input-bar button:active{
+    scale: 1;
+    transition: scale 100ms;
+}
+
+.sub-title{
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--N-Body-Color);
+    font-family: var(--Paragraph-Font), serif;
+}
+
+.sub-title span{
+    font-family: var(--Paragraph-Font-Italic), serif;
+    font-weight: 700;
+}
+
+.errorDialog{
+    font-family: var(--Application-UI-Regular-Font), sans-serif;
+    font-size: 0.85rem;
+    color: red;
+}

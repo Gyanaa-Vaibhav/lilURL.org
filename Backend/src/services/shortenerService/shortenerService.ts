@@ -49,9 +49,8 @@ export class ShortenerService{
 
         const linkExists = await this.getLinkService.query({longURL:LongLink})
         const expiredLinks = await this.getExpiredLinksService.getFirstID()
-        console.log(expiredLinks)
 
-        if(linkExists.rows) {
+        if(linkExists.rows[0]) {
             console.warn("Short link already exists returning the old one:",linkExists.rows[0].shorturl)
             return {success:true,message:"Exists",shortURL:linkExists.rows[0].shorturl};
         }
