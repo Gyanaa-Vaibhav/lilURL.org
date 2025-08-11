@@ -1,4 +1,4 @@
-import {base62Decoder,base62Encoder} from './utils/utilsExport.js'
+import {base62Encoder} from './utils/utilsExport.js'
 import {getLinkService,addLinkService,getExpiredLinksService} from "../databaseService/databaseExports.js";
 
 /**

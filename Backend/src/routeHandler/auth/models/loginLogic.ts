@@ -3,11 +3,14 @@ import {getUserService, hashService, jwtService} from "../../../services/service
 
 export async function loginLogic(req: Request, res: Response) {
     const email = req.body.email;
+    const password = req.body.password;
+    if(!email || !password){
+        return res.status(400).json({success: false, message: 'Email or password is required'});
+    }
     const {rows} = await getUserService.query({email});
     if(rows.length == 0){
-        return res.status(401).json({success: false, message: 'No user found.'});
+        return res.status(404).json({success: false, message: 'No user found.'});
     }
-    const password = req.body.password;
     const isValid = await hashService.compareString(password, rows[0].password!);
     if(!isValid){
         return res.status(401).json({success: false, message: 'Email or password invalid.'});

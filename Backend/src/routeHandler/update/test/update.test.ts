@@ -1,9 +1,9 @@
 import request from 'supertest';
 import express from 'express';
-import updateRoute from '../routes/updateRouter';
+import {updateRouter} from '../routes/updateRouter';
 
 const app = express();
-app.use('/update', updateRoute);
+app.use('/update', updateRouter);
 
 describe('update Route', () => {
     it('should render the update page', async () => {

@@ -14,7 +14,7 @@ import {
 } from './routeHandler/routeHandlerExport.js'
 dotenv.config()
 
-const app = express()
+export const app = express()
 const PORT = process.env.PORT || 5173
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
@@ -50,7 +50,6 @@ app.use('/get', getRouter)
 app.get("/a/check-login", (req,res)=>{
     res.json({success:true})
 })
-
 
 app.listen(PORT, () => {
     console.log(`Listening on Port ${PORT}`);

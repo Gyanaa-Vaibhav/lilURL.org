@@ -1,16 +1,17 @@
-name: lilURL-dev
+name: lilURL-Test
 
 services:
-  frontend:
+  frontend-build:
     build:
       context: ./Frontend
-      dockerfile: frontend.Dockerfile
+      dockerfile: frontend.build.Dockerfile
     ports:
       - $FRONTEND_PORT:$FRONTEND_PORT
     volumes:
       - ./Frontend:/app
       - /app/node_modules
-    container_name: lilUrl_frontend
+      - lilUrl-Frontend-Build:/app/build
+    container_name: lilUrl_frontend_test
     env_file:
       - $FRONTEND_ENV
     depends_on:
@@ -27,23 +28,24 @@ services:
     volumes:
       - ./Backend:/app
       - /app/node_modules
-    container_name: lilUrl_backend
+      - lilUrl-Frontend-Build:/app/Frontend
+    container_name: lilUrl_backend_test
     depends_on:
       - lilURL_DB
       - lilURL_redis
 
   lilURL_redis:
     image: redis:8.2-alpine
-    container_name: lilURL_redis
+    container_name: lilURL_redis_test
     ports:
       - $REDIS_PORT:6379
     volumes:
-      - lilURL-redis-data:/data
+      - lilURL-redis-data-test:/data
     restart: unless-stopped
 
   lilURL_DB:
     image: postgres:15-alpine
-    container_name: lilURL_DB
+    container_name: lilURL_DB_test
     restart: unless-stopped
     ports:
       - $DB_PORT:5432
@@ -52,8 +54,9 @@ services:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
     volumes:
-      - pgData-lilURL:/var/lib/postgresql/data
+      - pgData-lilURL-test:/var/lib/postgresql/data
 
 volumes:
-  lilURL-redis-data:
-  pgData-lilURL:
+  lilURL-redis-data-test:
+  pgData-lilURL-test:
+  lilUrl-Frontend-Build:

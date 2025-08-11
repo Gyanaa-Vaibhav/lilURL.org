@@ -24,5 +24,5 @@ export async function getUserDetails(req:Request, res:Response){
 }
 
 export async function getOrCreateLink(req:Request, res:Response){
-
+    console.log(req,res)
 }
