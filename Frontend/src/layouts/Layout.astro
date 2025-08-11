@@ -22,6 +22,20 @@ const { title = "lilUrl" } = Astro.props;
 		--Body-Color : #183B4E;
 		--Accent-Color : #c08322;
 		--Accent-Color-2 : #DDA853;
+		--Heading-Font: "FreightSans-SemiBold", sans-serif;
+		--CTA-Font: "Effra-Medium";
+		--Paragraph-Font: "OpenSans-VariableFont";
+		--Paragraph-Font-Italic: "OpenSans-Italic";
+		--Application-UI-Light-Font: "Effra-Light";
+		--Application-UI-Medium-Font: "Effra-Medium", sans-serif;
+		--Application-UI-Regular-Font: "Effra-Regular", sans-serif;
+		--N-BG: #D9E2EC;
+		--N-Cards-BG: #F0F4F8;
+		--N-CTA-BG: #048271;
+		--N-CTA-BG-Hover: #03695C;
+		--N-Body-Color: #334E68;
+		--N-CTA-Color: #FFFFFF;
+		--N-Heading-Color: #102A43;
 	}
 
 	a {
@@ -30,9 +44,8 @@ const { title = "lilUrl" } = Astro.props;
 
 	body{
 		margin: 0;
-		font-size: 10px !important;
 		position: relative;
-		background-color: var(--Primary-Color);
+		background-color: var(--N-BG);
 	}
 
 	@font-face {
@@ -58,5 +71,58 @@ const { title = "lilUrl" } = Astro.props;
 	@font-face {
 		font-family: 'Pacifico';
 		src: url("/fonts/Pacifico/Pacifico-Regular.ttf");
+	}
+
+	@font-face {
+		font-family: "FreightSans-Bold";
+		src: url("/fonts/FreightSans/FreightSans_Pro_Bold.otf")
+	}
+
+	@font-face {
+		font-family: "FreightSans-Medium";
+		src: url("/fonts/FreightSans/FreightSans_Pro_Medium.otf")
+	}
+
+	@font-face {
+		font-family: "FreightSans-SemiBold";
+		src: url("/fonts/FreightSans/FreightSans_Pro_Semibold.otf")
+	}
+
+	@font-face {
+		font-family: "Effra-Regular";
+		src: url("/fonts/Effra/Effra-Regular.ttf")
+	}
+
+	@font-face {
+		font-family: "Effra-Bold";
+		src: url("/fonts/Effra/Effra-Bold.ttf")
+	}
+	@font-face {
+		font-family: "Effra-Medium";
+		src: url("/fonts/Effra/Effra-Medium.ttf")
+	}
+
+	@font-face {
+		font-family: "Effra-Heavy";
+		src: url("/fonts/Effra/Effra-Heavy.ttf")
+	}
+
+	@font-face {
+		font-family: "Effra-Light";
+		src: url("/fonts/Effra/EffraLight.ttf")
+	}
+
+	@font-face {
+		font-family: "OpenSans-VariableFont";
+		src: url("/fonts/OpenSans/OpenSans-VariableFont.ttf");
+	}
+
+	@font-face {
+		font-family: "OpenSans-Italic";
+		src: url("/fonts/OpenSans/OpenSans-Italic.ttf");
+	}
+	@font-face {
+		font-family: "Proxima Nova Regular";
+		src: url("/fonts/ProximaNova/Proxima Nova Regular.ttf");
 	}
 </style>

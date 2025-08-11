@@ -38,8 +38,8 @@ app.get("/:shortURL",redirectRouter)
 app.use("/auth",authRouter)
 app.post("/free/link",async (req, res) => {
     console.log(req.body)
-    // await shortenerService.createLink({})
-    res.json({success: true})
+    const rews = await shortenerService.createLink(req.body.longLink)
+    res.json({success: true,rews})
 })
 
 app.use( jwtService.verifyToken.bind(jwtService) )
