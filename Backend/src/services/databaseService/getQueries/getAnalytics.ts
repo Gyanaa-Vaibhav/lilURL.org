@@ -32,7 +32,7 @@ class GetAnalytics implements GetInterface {
      * @throws {Error} If input is invalid or no matching handler is found.
      */
     public async query(input:QueryInput):Promise<QueryResult<any>>{
-        if(input.userID) return this.byUserId(input.userID,input.start,input.end);
+        if(input.userID && input.start && input.end) return this.byUserId(input.userID,input.start,input.end);
         if(input.linkID) return this.byLinkId(input.linkID);
         if(input.shortURL) return this.byShortURL(input.shortURL);
         logError("Invalid Query for GetAnalytics");
