@@ -5,12 +5,12 @@ import {deleteUserService} from "../../../services/databaseService/deleteQueries
 
 describe('Sign-Up Route', () => {
     it('Should successfully Register a new user', async () => {
-        await deleteUserService.query({email:"test@gmail.com"})
+        await deleteUserService.query({email:"test@test.com"})
         const res = await request(app)
             .post('/auth/sign-up')
             .set("content-type", "application/json")
             .send({
-                email:"test@gmail.com",
+                email:"test@test.com",
                 password:"Password@123"
             })
         expect(res.statusCode).toBe(200);
@@ -22,7 +22,7 @@ describe('Sign-Up Route', () => {
             .post('/auth/sign-up')
             .set("content-type", "application/json")
             .send({
-                email:"test@gmail.com",
+                email:"test@test.com",
                 password:"Password@123"
             })
         expect(res.statusCode).toBe(409);

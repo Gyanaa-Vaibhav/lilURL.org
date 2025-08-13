@@ -25,16 +25,16 @@ jobs:
       - name: Run Linter
         run: docker exec -i lilUrl_backend_test sh -c "npm run lint"
 
-#  Test:
-#    runs-on: [self-hosted, CI]
-#    needs: Linter
-#    steps:
-#      - name: Run Test
-#        run: docker exec -i lilUrl_backend_test sh -c "npm run test"
+  Test:
+    runs-on: [self-hosted, CI]
+    needs: Linter
+    steps:
+      - name: Run Test
+        run: docker exec -i lilUrl_backend_test sh -c "npm run test"
 
   Clean_Up:
     runs-on: [self-hosted, CI]
-    needs: Linter
+    needs: Test
     steps:
       - name: Stop Containers
         if: always()

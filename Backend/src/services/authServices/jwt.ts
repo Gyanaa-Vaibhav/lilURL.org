@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import {NextFunction,Response,Request} from "express";
 import {logError, logWarn} from "../servicesExport.js"
 dotenv.config();
-
+export interface JwtPayloadCustom { userId: number; username: string; email: string }
 /**
  * Handles JWT operations including signing, verification, decoding, and token refreshing.
  * Utilizes environment variables for access and refresh token secrets.
@@ -28,7 +28,7 @@ class JWTValidator{
      * @param {string} [expiry] - Optional custom expiration time.
      * @returns {string} - Signed JWT access token.
      */
-    public signAccessToken(payload:any, expiry?:any){
+    public signAccessToken(payload:any, expiry?:any): string{
         if(expiry) return jwt.sign(payload,this.accessToken!, {expiresIn: expiry})
         return jwt.sign(payload,this.accessToken!, {expiresIn:'6hr'})
     }
@@ -38,7 +38,7 @@ class JWTValidator{
      * @param {any} payload - Data to encode in the token.
      * @returns {string} - Signed JWT refresh token.
      */
-    public signRefreshToken(payload:any){
+    public signRefreshToken(payload:any): string{
         return jwt.sign(payload,this.refreshToken!, {expiresIn:'7d'})
     }
 

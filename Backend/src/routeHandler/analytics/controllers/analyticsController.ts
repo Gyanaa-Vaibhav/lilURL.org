@@ -1,11 +1,13 @@
+
 // Controller for analytics
 import { Request, Response } from 'express';
 import {getAnalyticsService} from "../../../services/servicesExport.js";
 import dayjs from "dayjs";
+import {JwtPayloadCustom} from "../../../services/authServices/jwt.js";
 
 export const renderAnalytics = async (req:Request,res:Response)=>{
-    // @ts-ignore
-    const userId = req.params.userId || req.user?.userId;
+
+    const userId = req.params.userId || (req.user as JwtPayloadCustom).userId;
     const start = req.query.start as string;
     const end = req.query.end as string;
 
@@ -13,7 +15,7 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
 
     let qrClicks = 0;
     let linkClicks = 0;
-    const linkCountMap = {};
+    // const linkCountMap = {};
     let linkCount = 0;
     const grouped: {
         device: Record<string, number>;
@@ -33,12 +35,12 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
         } else {
             linkClicks++;
         }
-        if (!linkCountMap[row.linkid]) {
-            linkCountMap[row.linkid] = 1;
-            linkCount++;
-        } else {
-            linkCountMap[row.linkid]++;
-        }
+        // if (!linkCountMap[row.linkid]) {
+        //     linkCountMap[row.linkid] = 1;
+        //     linkCount++;
+        // } else {
+        //     linkCountMap[row.linkid]++;
+        // }
         // Device
         const device = row.isbot ? "Bot" :
             /mobile/i.test(row.devicetype) ? "Mobile" :
@@ -62,7 +64,7 @@ export const renderAnalytics = async (req:Request,res:Response)=>{
         success: true,
         userId,
         data: {
-            device: Object.entries(grouped.device).map(([devicetype, count]) => ({ devicetype, count })),
+            device: Object.entries(grouped.device).map(([deviceType, count]) => ({ deviceType, count })),
             os: Object.entries(grouped.os).map(([os, count]) => ({ os, count })),
             location: Object.entries(grouped.location).map(([location, count]) => ({ location, count })),
             click: Object.entries(grouped.click).map(([day, count]) => ({ day, count })),

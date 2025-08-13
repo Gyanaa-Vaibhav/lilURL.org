@@ -34,22 +34,23 @@ app.get("/", (req, res) => {
 });
 app.get('/refreshToken',jwtService.refreshIncomingToken.bind(jwtService))
 
-app.get("/:shortURL",redirectRouter)
 app.use("/auth",authRouter)
 app.post("/free/link",async (req, res) => {
     console.log(req.body)
-    const rews = await shortenerService.createLink(req.body.longLink)
-    res.json({success: true,rews})
+    const rows = await shortenerService.createLink(req.body.longLink)
+    res.json({...rows})
 })
 
-app.use( jwtService.verifyToken.bind(jwtService) )
+// app.use( jwtService.verifyToken.bind(jwtService) )
 
-app.use("/analytics", analyticsRouter)
-app.use('/update', updateRouter)
-app.use('/get', getRouter)
+app.use("/analytics", jwtService.verifyToken.bind(jwtService), analyticsRouter)
+app.use('/update', jwtService.verifyToken.bind(jwtService), updateRouter)
+app.use('/get', jwtService.verifyToken.bind(jwtService), getRouter)
 app.get("/a/check-login", (req,res)=>{
     res.json({success:true})
 })
+
+app.get("/:shortURL",redirectRouter)
 
 app.listen(PORT, () => {
     console.log(`Listening on Port ${PORT}`);

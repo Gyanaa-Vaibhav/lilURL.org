@@ -33,7 +33,8 @@ type UserData = {
     password?: string;
     oauth_id?: string;
     oauth_provider?: string;
-    createdAT: Date;
+    createdat: Date;
+    qr_options?:string;
 }
 
 /**
