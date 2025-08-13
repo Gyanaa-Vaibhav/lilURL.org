@@ -25,9 +25,16 @@ jobs:
       - name: Run Linter
         run: docker exec -i lilUrl_backend_test sh -c "npm run lint"
 
-  Test:
+  Initiate_DB:
     runs-on: [self-hosted, CI]
     needs: Linter
+    steps:
+      - name: Initiate DB
+        run: docker exec -i lilUrl_backend_test sh -c "node src/services/databaseService/databaseInit.ts"
+
+  Test:
+    runs-on: [self-hosted, CI]
+    needs: Initiate_DB
     steps:
       - name: Run Test
         run: docker exec -i lilUrl_backend_test sh -c "npm run test"
@@ -37,5 +44,5 @@ jobs:
     needs: Test
     steps:
       - name: Stop Containers
-        if: always()
+        if: ${{ always() }}
         run: docker compose -f docker-compose-test.yml --env-file=/env/lilUrl/.env down

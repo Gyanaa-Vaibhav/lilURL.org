@@ -19,23 +19,6 @@ const token = userObject.body.accessToken;
 const userId = userObject.body.userId;
 const startTime = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 const endTime = new Date().toISOString();
-// const db = Database.getInstance();
-// const query = `INSERT INTO analyticsdata (
-//   linkid, shorturl, userid, referrer, browser, os, devicetype, ip, location, isbot, time, qr
-// ) VALUES
-// (1, '1', $1, 'https://google.com', 'Chrome', 'Windows', 'Desktop', '192.168.1.1', 'Mumbai, India', false, NOW() - interval '5 minutes', false),
-// (1, '1', $1, 'https://facebook.com', 'Firefox', 'macOS', 'Laptop', '192.168.1.2', 'Delhi, India', false, NOW() - interval '1 hour', true),
-// (1, '1', $1, 'https://twitter.com', 'Safari', 'iOS', 'Mobile', '192.168.1.3', 'Bangalore, India', false, NOW() - interval '3 hours', false),
-// (1, '1', $1, 'https://t.co', 'Edge', 'Windows', 'Desktop', '192.168.1.4', 'Hyderabad, India', false, NOW() - interval '1 day', false),
-// (1, '1', $1, '', 'Chrome', 'Android', 'Mobile', '10.0.0.1', 'Pune, India', true, NOW() - interval '2 days', false),
-// (1, '1', $1, 'https://linkedin.com', 'Chrome', 'Linux', 'Laptop', '10.0.0.2', 'Chennai, India', false, NOW() - interval '3 days', false),
-// (1, '1', $1, '', 'Safari', 'iOS', 'Tablet', '172.16.0.1', 'Ahmedabad, India', false, NOW() - interval '10 minutes', true),
-// (1, '1', $1, 'https://instagram.com', 'Firefox', 'Windows', 'Desktop', '172.16.0.2', 'Jaipur, India', false, NOW() - interval '20 minutes', false),
-// (1, '1', $1, '', 'Bot', 'Linux', 'Server', '8.8.8.8', 'USA - Google Bot', true, NOW() - interval '4 hours', false),
-// (1, '1', $1, '', 'Bot', 'Linux', 'Server', '8.8.4.4', 'Singapore - Bing Bot', true, NOW() - interval '5 hours', false);
-// `
-// const rows = await db.query(query,[userId])
-// console.log(rows)
 
 describe('analytics Route', () => {
     // it('should render the analytics page', async () => {

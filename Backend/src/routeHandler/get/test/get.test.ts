@@ -16,7 +16,7 @@ describe('get Route', () => {
         const res = await request(app)
             .get('/get')
             .set("authorization", `Bearer ${token}`);
-
+        console.log(res.body)
         expect(res.statusCode).toBe(200);
         expect(res.text).toBe('Render get page here');
     });
@@ -53,7 +53,7 @@ describe('get Route', () => {
         const res = await request(app)
             .get('/get/link')
             .set("authorization", `Bearer ${token}`);
-        console.log(res)
+        console.log(res.body)
     //     TODO Need to add logic and code
 
     });

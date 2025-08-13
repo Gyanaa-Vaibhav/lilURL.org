@@ -28,8 +28,6 @@ describe('Sign-Up Route', () => {
         expect(res.statusCode).toBe(409);
         expect(res.body).toMatchObject({success:false, message: 'Account already exists, Please Log-in'});
     });
-
-
 });
 
 describe("Login Route", () => {
