@@ -31,6 +31,7 @@ services:
     depends_on:
       - lilURL_DB
       - lilURL_redis
+      - lilURL_Read
 
   lilURL_redis:
     image: redis:8.2-alpine
@@ -43,17 +44,46 @@ services:
 
   lilURL_DB:
     image: postgres:15-alpine
-    container_name: lilURL_DB
+    container_name: lilURL_DB_Write
     restart: unless-stopped
-    ports:
-      - $DB_PORT:5432
+    expose:
+      - 5432
     environment:
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
+    command: >
+      postgres -c wal_level=replica
+               -c max_wal_senders=10
+               -c max_replication_slots=10
+               -c listen_addresses='*'
     volumes:
-      - pgData-lilURL:/var/lib/postgresql/data
+      - pgDataW:/var/lib/postgresql/data
+      - ./init-repl.sh:/docker-entrypoint-initdb.d/init-repl.sh:ro
+
+  lilURL_Read:
+    image: postgres:15-alpine
+    container_name: lilURL_DB_Read
+    restart: unless-stopped
+    expose:
+      - 5432
+    environment:
+      PGPASSWORD: replpass
+    command: >
+      bash -c "
+        sleep 15 &&
+        rm -rf /var/lib/postgresql/data/* &&
+        su-exec postgres pg_basebackup -h lilURL_DB -U repl -D /var/lib/postgresql/data -Fp -Xs -P -R &&
+        chown -R postgres:postgres /var/lib/postgresql/data &&
+        chmod 700 /var/lib/postgresql/data &&
+        exec su-exec postgres postgres
+      "
+    volumes:
+      - pgDataR:/var/lib/postgresql/data
+    depends_on:
+      - lilURL_DB
 
 volumes:
   lilURL-redis-data:
-  pgData-lilURL:
+  pgDataW:
+  pgDataR:

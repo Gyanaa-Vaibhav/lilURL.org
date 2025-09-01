@@ -5,7 +5,7 @@ import {logError} from "../../logger/loggerExport.js";
 
 type QueryInput = { shortLink?: string; longURL?: string; id?: number; userId?:number };
 class GetLink implements GetInterface{
-    private db = Database.getInstance()
+    private db = Database.getInstance('read')
     /**
      * Dynamically resolves a fetch strategy based on the provided input key.
      * Delegates the query to one of the dedicated methods: byShortURL, byLongURL, or byID.

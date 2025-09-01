@@ -1,5 +1,5 @@
 import {Pool} from "pg";
-const host = process.env.DB_HOSTNAME
+const host = process.env.DB_HOSTNAME_WRITE
 const password = process.env.DB_PASSWORD
 const user = process.env.DB_USER;
 const port = Number(process.env.DB_PORT)

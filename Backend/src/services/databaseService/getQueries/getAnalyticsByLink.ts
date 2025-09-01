@@ -32,7 +32,7 @@ type QueryInput = {
  * such as device type, OS, geo, click totals, or hourly distribution.
  */
 class GetAnalyticsByLink implements GetInterface {
-    private db = Database.getInstance();
+    private db = Database.getInstance('read');
 
     /**
      * Routes the input to the appropriate analytics method based on provided query keys.

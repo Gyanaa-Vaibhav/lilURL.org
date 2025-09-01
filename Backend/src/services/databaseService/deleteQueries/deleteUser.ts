@@ -13,7 +13,7 @@ type DeleteUserType = {
  * Supports deletion by userID, username, or email.
  */
 class DeleteUser implements DeleteInterface{
-    private db = Database.getInstance();
+    private db = Database.getInstance('write');
 
     /**
      * Deletes a user from the 'users' table by email or username.
