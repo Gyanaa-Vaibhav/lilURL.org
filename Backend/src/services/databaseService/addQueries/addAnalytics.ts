@@ -37,7 +37,7 @@ type AnalyticsInput = {
  * Implements AddInterface to ensure query method consistency.
  */
 class AddAnalytics implements AddInterface{
-    private db = Database.getInstance();
+    private db = Database.getInstance('write');
     /**
      * Inserts a new record into the analyticsdata table.
      * @param {AnalyticsInput} data - Analytics event details to log.

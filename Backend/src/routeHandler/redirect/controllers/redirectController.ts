@@ -19,7 +19,6 @@ export async function renderRedirect(req:Request, res:Response) {
     }
 
     if(!isLocal) await addAnalyticsService.query({referrer,browser,os,deviceType,time,isBot,ip,location,linkID,shortURL})
-
     if (returnURL.longURL) {
         const redirectURL = returnURL.longURL.startsWith("https://")
             ? returnURL.longURL
@@ -28,7 +27,15 @@ export async function renderRedirect(req:Request, res:Response) {
     }
 }
 
-async function getIpLocation(ip:string){
+function getCleanIp(ip:string) {
+    if(!ip) {
+        throw new Error('Missing ip');
+    }
+    return ip.replace(/^::ffff:/, '');
+}
+
+async function getIpLocation(ipA:string){
+    const ip = getCleanIp(ipA);
     if(!ip) return null;
     let location = null;
 

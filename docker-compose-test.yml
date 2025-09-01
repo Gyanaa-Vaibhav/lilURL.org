@@ -31,32 +31,76 @@ services:
       - lilUrl-Frontend-Build:/app/Frontend
     container_name: lilUrl_backend_test
     depends_on:
-      - lilURL_DB
-      - lilURL_redis
+      lilURL_DB:
+        condition: service_healthy
+      lilURL_redis:
+        condition: service_healthy
+      lilURL_Read:
+        condition: service_healthy
 
   lilURL_redis:
     image: redis:8.2-alpine
     container_name: lilURL_redis_test
     ports:
       - $REDIS_PORT:6379
-    volumes:
-      - lilURL-redis-data-test:/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   lilURL_DB:
     image: postgres:15-alpine
-    container_name: lilURL_DB_test
+    container_name: lilURL_DB_Test_Write
     restart: unless-stopped
-    ports:
-      - $DB_PORT:5432
+    expose:
+      - 5432
     environment:
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
+    command: >
+      postgres -c wal_level=replica
+               -c max_wal_senders=10
+               -c max_replication_slots=10
+               -c listen_addresses='*'
     volumes:
-      - pgData-lilURL-test:/var/lib/postgresql/data
+      - ./init-repl.sh:/docker-entrypoint-initdb.d/init-repl.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DB_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  lilURL_Read:
+    image: postgres:15-alpine
+    container_name: lilURL_DB_Test_Read
+    restart: unless-stopped
+    expose:
+      - 5432
+    environment:
+      PGPASSWORD: replpass
+    command: >
+      bash -c "
+        sleep 15 &&
+        rm -rf /var/lib/postgresql/data/* &&
+        su-exec postgres pg_basebackup -h lilURL_DB_Test_Write -U repl -D /var/lib/postgresql/data -Fp -Xs -P -R &&
+        chown -R postgres:postgres /var/lib/postgresql/data &&
+        chmod 700 /var/lib/postgresql/data &&
+        exec su-exec postgres postgres
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DB_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      lilURL_DB:
+        condition: service_healthy
 
 volumes:
-  lilURL-redis-data-test:
-  pgData-lilURL-test:
   lilUrl-Frontend-Build:

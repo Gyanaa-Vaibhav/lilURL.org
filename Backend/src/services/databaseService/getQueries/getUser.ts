@@ -42,7 +42,7 @@ type UserData = {
  * Implements GetInterface with routing logic to select the correct query method.
  */
 class GetUser implements GetInterface{
-    private db = Database.getInstance();
+    private db = Database.getInstance('read');
 
     /**
      * Routes the input to the appropriate query method based on available fields.

@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 5173
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 
+app.set("trust proxy", true);
 app.use(cors({
     origin:true,
     // origin: '*',

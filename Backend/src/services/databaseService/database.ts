@@ -13,45 +13,44 @@ dotenv.config()
  * Designed to be extended or wrapped by DB-specific service classes (e.g., PostgresDB, MongoDB).
  */
 class Database{
-    private static database:unknown;
+    private static database: { [key: string]: unknown } = {};
 
     /**
      * Returns the initialized database instance.
      * Throws an error if called before initialization.
      */
-    public static getInstance() {
-        if (!Database.database) {
-            logError("Database not initialised please initialise using Database.initialiseDB() method")
-            throw new Error("Database not initialised please initialise using Database.initialiseDB() method");
+    public static getInstance(name: string) {
+        if (!Database.database[name]) {
+            logError(`Database "${name}" not initialised`);
+            throw new Error(`Database "${name}" not initialised`);
         }
-        return Database.database;
+        return Database.database[name];
     }
 
     /**
      * Initializes the database instance once.
      * Subsequent calls with a connection will throw an error.
      *
+     * @param name
      * @param DBConnection - The DB connection object to store (e.g., Pool, MongoClient)
      */
-    public static initialiseDB(DBConnection:unknown){
-        if (Database.database && DBConnection) {
-            logError("Database already initialised")
-            throw new Error("Database already initialised");
+    public static initialiseDB(name:string,DBConnection:unknown){
+        if (Database.database[name]) {
+            logError(`Database "${name}" already initialised`);
+            throw new Error(`Database "${name}" already initialised`);
         }
-        if (!Database.database && DBConnection) {
-            Database.database = DBConnection;
-            if(DBConnection instanceof Pool)
+        Database.database[name] = DBConnection;
+        if(DBConnection instanceof Pool)
             DBConnection.query("SELECT NOW()")
                 .catch((err: unknown) => {
                     if (err instanceof Error) {
-                        logError(`Database connection failed: ${err.message}`);
+                        logError(`Database connection failed: ${err.message} for ${name}`);
                     } else {
                         logError("Database connection failed with unknown error type.");
                     }
 
-                    throw new Error("Database Connection Failed");
+                    throw new Error(`Database Connection Failed for ${name}`);
                 });
-        }
     }
 }
 
@@ -68,32 +67,42 @@ export class PostgresDB{
     /**
      * Returns the database instance as a PostgreSQL Pool.
      */
-    public static getInstance(){
-        return Database.getInstance() as Pool;
+    public static getInstance(name:string){
+        return Database.getInstance(name) as Pool;
     }
 }
 
-const host = process.env.DB_HOSTNAME
+const writeHost = process.env.DB_HOSTNAME_WRITE
+const readHost = process.env.DB_HOSTNAME_READ
 const password = process.env.DB_PASSWORD
 const user = process.env.DB_USER;
 const port = Number(process.env.DB_PORT)
 const database = process.env.DB_NAME;
 
-if(!database || !host || !password || !user || !port ){
+if(!database || !writeHost || !password || !user || !port || !readHost){
     logError("env not configured, make sure you have .env available")
 }
 
-const pool = new Pool({
-    host: host,
+const writePool = new Pool({
+    host: writeHost,
     password: password,
     user: user,
     port: port,
     database: database,
 })
 
-Database.initialiseDB(pool)
+const readPool = new Pool({
+    host: readHost,
+    password: password,
+    user: user,
+    port: port,
+    database: database,
+})
+
+Database.initialiseDB('write', writePool)
+Database.initialiseDB('read', readPool)
 
 // Example test
-// const db = PostgresDB.getInstance()
-// const {rows} = await db.query("Select * FROM users")
-// console.log(rows)
+// const db = PostgresDB.getInstance('write')
+// const write = await db.query("Select now()")
+// console.log(write.rows)

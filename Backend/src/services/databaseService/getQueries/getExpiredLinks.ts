@@ -3,7 +3,7 @@ import {Database} from '../databaseExports.js'
 import {QueryResult} from "pg";
 
 class GetExpiredLinks implements GetInterface{
-    private db = Database.getInstance()
+    private db = Database.getInstance('read')
 
     public async query():Promise<QueryResult> {
         return await this.db.query("SELECT * FROM expiredlinks")

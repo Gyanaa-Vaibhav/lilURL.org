@@ -1,16 +1,28 @@
 import request from 'supertest';
 import {app} from '../../../app.js'
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import {deleteUserService} from "../../../services/databaseService/deleteQueries/deleteUser";
+
+
+beforeAll(async () => {
+    const res = await request(app)
+        .post('/auth/sign-up')
+        .set("content-type", "application/json")
+        .send({
+            email:"random@random.com",
+            password:"Password@123"
+        })
+    console.log("RES", res.body)
+})
 
 describe('Sign-Up Route', () => {
     it('Should successfully Register a new user', async () => {
-        await deleteUserService.query({email:"test@test.com"})
+        await deleteUserService.query({email:"test1@test.com"})
         const res = await request(app)
             .post('/auth/sign-up')
             .set("content-type", "application/json")
             .send({
-                email:"test@test.com",
+                email:"test1@test.com",
                 password:"Password@123"
             })
         expect(res.statusCode).toBe(200);
@@ -22,7 +34,7 @@ describe('Sign-Up Route', () => {
             .post('/auth/sign-up')
             .set("content-type", "application/json")
             .send({
-                email:"test@test.com",
+                email:"random@random.com",
                 password:"Password@123"
             })
         expect(res.statusCode).toBe(409);
@@ -36,11 +48,11 @@ describe("Login Route", () => {
             .post('/auth/login')
             .set("content-type", "application/json")
             .send({
-                email:"test@gmail.com",
+                email:"test1@test.com",
                 password:"Password@123"
             })
         expect(res.statusCode).toBe(200);
-        expect(res.body).toMatchObject({success:true,username:"test",accessToken: expect.any(String),userId: expect.any(Number)});
+        expect(res.body).toMatchObject({success:true,username:"test1",accessToken: expect.any(String),userId: expect.any(Number)});
     })
 
     it('Should Return 404 No user found', async () => {
@@ -57,7 +69,7 @@ describe("Login Route", () => {
 
     it('should reject incorrect password', async () => {
         const res = await request(app).post('/auth/login')
-            .send({ email: 'test@gmail.com', password: 'wrongPassword' });
+            .send({ email: 'test1@gmail.com', password: 'wrongPassword' });
         expect(res.statusCode).toBe(401); // Unauthorized
     });
 
@@ -69,7 +81,7 @@ describe("Login Route", () => {
 
     it('should fail when required fields are missing', async () => {
         const res = await request(app).post('/auth/login')
-            .send({ email: 'test@example.com' });
+            .send({ email: 'test1@example.com' });
         console.log(res.body)
         expect(res.statusCode).toBe(400);
     });

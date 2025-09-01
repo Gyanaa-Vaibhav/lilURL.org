@@ -14,7 +14,7 @@ type ToBeDeleted = {
  * Provides methods to delete by ID, linkID, or shortURL.
  */
 class DeleteExpiredLinks implements DeleteInterface{
-    private db = Database.getInstance()
+    private db = Database.getInstance('write')
 
     /**
      * Routes deletion to the appropriate method based on the provided identifier.

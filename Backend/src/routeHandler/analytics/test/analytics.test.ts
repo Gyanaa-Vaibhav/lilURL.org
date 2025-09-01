@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import {app} from '../../../app.js'
 import {analyticsRouter} from "../../routeHandlerExport";
 import {shortenerService} from "../../../services/shortenerService/shortenerService";
@@ -8,15 +8,29 @@ app.use('/analytics', analyticsRouter);
 const linkObject = await shortenerService.createLink("https://google.com")
 const linkId = linkObject.shortURL
 
-const userObject =await request(app)
-    .post('/auth/login')
-    .set("content-type", "application/json")
-    .send({
-        email:"test@gmail.com",
-        password:"Password@123"
-    })
-const token = userObject.body.accessToken;
-const userId = userObject.body.userId;
+let token: any;
+let userId: any;
+
+beforeAll(async () => {
+    const _register = await request(app)
+        .post('/auth/sign-up')
+        .set("content-type", "application/json")
+        .send({
+            email:"test1@gmail.com",
+            password:"Password@123"
+        })
+
+    const userObject = await request(app)
+        .post('/auth/login')
+        .set("content-type", "application/json")
+        .send({
+            email:"test1@gmail.com",
+            password:"Password@123"
+        })
+
+    token = userObject.body.accessToken;
+    userId = userObject.body.userId;
+})
 const startTime = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 const endTime = new Date().toISOString();
 
@@ -31,6 +45,7 @@ describe('analytics Route', () => {
         const res = await request(app)
             .get(`/analytics/${userId}?start=${startTime}&end=${endTime}`)
             .set('authorization', `Bearer ${token}`)
+        console.log(res.body)
         expect(res.status).toBe(200)
         expect(res.body).toMatchObject({
             success: true,
@@ -76,7 +91,7 @@ describe('analytics Route', () => {
         const res = await request(app)
             .get(`/analytics/${linkId}/os?start=${startTime}&end=${endTime}`)
             .set('authorization', `Bearer ${token}`)
-
+        console.log(res.body)
         expect(res.status).toBe(200)
         expect(res.body).toMatchObject({
             success: true,
@@ -96,7 +111,7 @@ describe('analytics Route', () => {
         const res = await request(app)
             .get(`/analytics/${linkId}/devices?start=${startTime}&end=${endTime}`)
             .set('authorization', `Bearer ${token}`)
-
+        console.log(res.body)
         expect(res.status).toBe(200)
         expect(res.body).toMatchObject({
             success: true,
@@ -116,7 +131,7 @@ describe('analytics Route', () => {
         const res = await request(app)
             .get(`/analytics/${linkId}/geo?start=${startTime}&end=${endTime}`)
             .set('authorization', `Bearer ${token}`)
-
+        console.log(res.body)
         expect(res.status).toBe(200)
         expect(res.body).toMatchObject({
             success: true,
@@ -136,7 +151,7 @@ describe('analytics Route', () => {
         const res = await request(app)
             .get(`/analytics/${linkId}/clicks?start=${startTime}&end=${endTime}`)
             .set('authorization', `Bearer ${token}`)
-
+        console.log(res.body)
         expect(res.status).toBe(200)
         expect(res.body).toMatchObject({
             success: true,
@@ -158,6 +173,7 @@ describe("Analytics Route False Constraints", () => {
         const res = await request(app)
             .get(`/analytics/${userId}?start=${new Date()}&end=${new Date()}`)
             .set('authorization', `Bearer ${token}`)
+        console.log(res.body)
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({success:false,message: 'Invalid Date Format' })
     })
@@ -165,6 +181,7 @@ describe("Analytics Route False Constraints", () => {
     it("Should fail on request without token",async () => {
         const res = await request(app)
             .get(`/analytics/${userId}?start=${new Date()}&end=${new Date()}`)
+        console.log(res.body)
         expect(res.status).toBe(401);
         expect(res.body).toMatchObject({success:false ,error: 'Authorization token missing or malformed',})
     })
@@ -173,6 +190,7 @@ describe("Analytics Route False Constraints", () => {
         const res = await request(app)
             .get(`/analytics/${userId}?end=${endTime}`)
             .set('authorization', `Bearer ${token}`);
+        console.log(res.body)
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({ success: false, message: "Missing Parameter Start or end Date" });
     });
@@ -181,6 +199,7 @@ describe("Analytics Route False Constraints", () => {
         const res = await request(app)
             .get(`/analytics/${userId}?start=${startTime}`)
             .set('authorization', `Bearer ${token}`);
+        console.log(res.body)
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({ success: false, message: "Missing Parameter Start or end Date" });
     });
@@ -189,6 +208,7 @@ describe("Analytics Route False Constraints", () => {
         const res = await request(app)
             .get(`/analytics/${userId}?start=${endTime}&end=${startTime}`)
             .set('authorization', `Bearer ${token}`);
+        console.log(res.body)
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({ success: false, message: "'start' date must be before 'end' date" });
     });
@@ -197,7 +217,7 @@ describe("Analytics Route False Constraints", () => {
         const res = await request(app)
             .get(`/analytics/invalidUserId?start=${startTime}&end=${endTime}`)
             .set('authorization', `Bearer ${token}`);
-
+        console.log(res.body)
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({ success: false, message: 'Invalid userId' });
     });

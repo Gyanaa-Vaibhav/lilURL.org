@@ -9,7 +9,7 @@ type linkType = {
 }
 
 class AddLink implements AddInterface{
-    private db = Database.getInstance()
+    private db = Database.getInstance('write')
     /**
      * Inserts a new shortened link into the database.
      *

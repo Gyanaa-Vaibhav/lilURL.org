@@ -23,7 +23,7 @@ type QueryInput = { linkID?: number; shortURL?: string; userID?: number; start:s
  * Implements the GetInterface to provide query execution for different analytics views.
  */
 class GetAnalytics implements GetInterface {
-    private db = Database.getInstance()
+    private db = Database.getInstance('read')
 
     /**
      * Main query dispatcher that routes to appropriate analytics fetch method.

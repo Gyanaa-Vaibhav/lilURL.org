@@ -16,7 +16,7 @@ type userData = {
  */
 class AddUser implements AddInterface{
 
-    private db = Database.getInstance();
+    private db = Database.getInstance('write');
 
     /**
      * Inserts a new user into the users table and returns the generated userID.

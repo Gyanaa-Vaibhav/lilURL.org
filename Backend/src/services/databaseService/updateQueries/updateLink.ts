@@ -17,7 +17,7 @@ type Where = {
  * Handles dynamic updates to fields in the 'links' table of the database.
  */
 class UpdateLink implements UpdateInterface{
-    private db = Database.getInstance()
+    private db = Database.getInstance('write')
 
     /**
      * Updates a specific column in the 'links' table where a condition is matched.
