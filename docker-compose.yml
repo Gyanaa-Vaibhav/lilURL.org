@@ -29,9 +29,12 @@ services:
       - /app/node_modules
     container_name: lilUrl_backend
     depends_on:
-      - lilURL_DB
-      - lilURL_redis
-      - lilURL_Read
+      lilURL_DB:
+        condition: service_healthy
+      lilURL_redis:
+        condition: service_healthy
+      lilURL_Read:
+        condition: service_healthy
 
   lilURL_redis:
     image: redis:8.2-alpine
@@ -41,6 +44,12 @@ services:
     volumes:
       - lilURL-redis-data:/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   lilURL_DB:
     image: postgres:15-alpine
@@ -60,6 +69,12 @@ services:
     volumes:
       - pgDataW:/var/lib/postgresql/data
       - ./init-repl.sh:/docker-entrypoint-initdb.d/init-repl.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DB_USER -d $DB_NAME"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   lilURL_Read:
     image: postgres:15-alpine
@@ -80,8 +95,15 @@ services:
       "
     volumes:
       - pgDataR:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DB_USER -d $DB_NAME"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     depends_on:
-      - lilURL_DB
+      lilURL_DB:
+        condition: service_healthy
 
 volumes:
   lilURL-redis-data:

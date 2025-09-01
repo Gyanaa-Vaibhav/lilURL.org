@@ -49,7 +49,7 @@ class Database{
                         logError("Database connection failed with unknown error type.");
                     }
 
-                    throw new Error("Database Connection Failed");
+                    throw new Error(`Database Connection Failed for ${name}`);
                 });
     }
 }
@@ -103,6 +103,6 @@ Database.initialiseDB('write', writePool)
 Database.initialiseDB('read', readPool)
 
 // Example test
-const db = PostgresDB.getInstance('write')
-const write = await db.query("Select now()")
-console.log(write.rows)
+// const db = PostgresDB.getInstance('write')
+// const write = await db.query("Select now()")
+// console.log(write.rows)

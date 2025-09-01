@@ -1,15 +1,15 @@
-.input-bar{
+.input-bar, .copy-link{
     display: flex;
     border-radius: 10px;
 }
 
-.input-bar div{
+.input-bar div, .copy-link div{
     display: flex;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
 }
 
-.input-bar label{
+.input-bar label, .copy-link span{
     padding-left: 6px;
     background-color: #FFFFFF;
     border-top-left-radius: 6px;
@@ -17,11 +17,11 @@
     border-bottom-left-radius: 6px;
 }
 
-.input-bar label svg{
+.input-bar label svg, .copy-link span svg{
     height: 100%;
 }
 
-.input-bar input{
+.input-bar input, .copy-link p{
     font-family: var(--Paragraph-Font), serif;
     font-weight: 400;
     font-size: 1rem;
@@ -42,7 +42,7 @@
     font-family: "Proxima Nova Regular", serif;
 }
 
-.input-bar button{
+.input-bar button, .copy-link button{
     border: none;
     font-size: 1rem;
     padding: 6px 12px;
@@ -65,6 +65,12 @@
     transition: scale 100ms;
 }
 
+.title{
+    text-align: center;
+    color: var(--N-Body-Color);
+    font-family: var(--Heading-Font), serif;
+}
+
 .sub-title{
     margin-top: 1rem;
     text-align: center;
@@ -80,5 +86,31 @@
 .errorDialog{
     font-family: var(--Application-UI-Regular-Font), sans-serif;
     font-size: 0.85rem;
+    margin-top: 0.5rem;
     color: red;
+}
+
+.link-output{
+    display: flex;
+    background-color: var(--N-Cards-BG);
+    border-radius: 1rem;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.link-output p{
+    font-family: var(--Paragraph-Font), serif;
+}
+
+.url-shortener{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.copy-link{
+    flex: 1;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: row;
 }

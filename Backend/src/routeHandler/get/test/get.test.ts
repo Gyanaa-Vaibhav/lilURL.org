@@ -1,22 +1,34 @@
 import request from 'supertest';
 import {app} from '../../../app.js'
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 
-const userObject =await request(app)
-    .post('/auth/login')
-    .set("content-type", "application/json")
-    .send({
-        email:"test@gmail.com",
-        password:"Password@123"
-    })
-const token = userObject.body.accessToken;
+let token: string;
+beforeAll(async () => {
+
+    const res = await request(app)
+        .post('/auth/sign-up')
+        .set("content-type", "application/json")
+        .send({
+            email:"test2@test.com",
+            password:"Password@123"
+        })
+    console.log("RES", res.body)
+
+    const userObject =await request(app)
+        .post('/auth/login')
+        .set("content-type", "application/json")
+        .send({
+            email:"test2@test.com",
+            password:"Password@123"
+        })
+    token = userObject.body.accessToken;
+})
 
 describe('get Route', () => {
     it('should render the get page', async () => {
         const res = await request(app)
             .get('/get')
             .set("authorization", `Bearer ${token}`);
-        console.log(res.body)
         expect(res.statusCode).toBe(200);
         expect(res.text).toBe('Render get page here');
     });
@@ -50,10 +62,9 @@ describe('get Route', () => {
     });
 
     it('should use get /link to create ot get a new link', async () => {
-        const res = await request(app)
+        const _res = await request(app)
             .get('/get/link')
             .set("authorization", `Bearer ${token}`);
-        console.log(res.body)
     //     TODO Need to add logic and code
 
     });
